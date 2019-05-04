@@ -3,9 +3,13 @@ package com.pal.populartv.ui
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.annotation.IdRes
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,14 +17,7 @@ import com.pal.populartv.R
 import com.pal.populartv.di.AppComponent
 import com.pal.populartv.di.DaggerAppComponent
 import com.pal.populartv.entity.TvShow
-import com.pal.populartv.net.ApiConstants
-import com.pal.populartv.net.TvShowsApi
-import com.pal.populartv.net.dto.TvShowDto
-import com.pal.populartv.net.dto.WrapperResponse
-import com.pal.populartv.net.dto.toValueObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.pal.populartv.viewmodel.TvShowsViewModel
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -30,9 +27,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var tvShowsApi: TvShowsApi
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var tvShowsViewModel: TvShowsViewModel
 
     private val recyclerView: RecyclerView by bind(R.id.recycler_view)
+    private val textFeedback: TextView by bind(R.id.text_feedback)
+    private val progress: ProgressBar by bind(R.id.progress)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,23 +47,40 @@ class MainActivity : AppCompatActivity() {
             adapter = TvShowsAdapter()
         }
 
-        tvShowsApi.getPopularTvShows(ApiConstants.API_KEY, 1).enqueue(object : Callback<WrapperResponse<TvShowDto>> {
-            override fun onFailure(call: Call<WrapperResponse<TvShowDto>>, t: Throwable) {
-                Log.e("tag", "this is an error")
-            }
-
-            override fun onResponse(
-                    call: Call<WrapperResponse<TvShowDto>>,
-                    response: Response<WrapperResponse<TvShowDto>>
-            ) {
-                response.body()?.also {
-                    val items: MutableList<TvShow> = mutableListOf()
-                    it.data.forEach{ tvShowDto: TvShowDto -> items.add(tvShowDto.toValueObject()) }
-                    (recyclerView.adapter as TvShowsAdapter).addItems(items)
-                }
-            }
-        })
+        tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
+        tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state)})
     }
+
+    private fun viewStateChanged(tvShowsState: TvShow.State) {
+        when (tvShowsState) {
+            is TvShow.State.Loading -> loading()
+            is TvShow.State.Error -> showError(tvShowsState.message)
+            is TvShow.State.Success -> updateTvShows(tvShowsState.tvShows)
+        }
+    }
+
+    private fun updateTvShows(tvShows: List<TvShow>) {
+        (recyclerView.adapter as TvShowsAdapter).addItems(tvShows)
+
+        textFeedback.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+        progress.visibility = View.GONE
+    }
+
+    private fun showError(message: String) {
+        textFeedback.text = message
+
+        textFeedback.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        progress.visibility = View.GONE
+    }
+
+    private fun loading() {
+        textFeedback.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        progress.visibility = View.VISIBLE
+    }
+
 
     fun <T : View> Activity.bind(@IdRes res: Int): Lazy<T> {
         @Suppress("UNCHECKED_CAST")

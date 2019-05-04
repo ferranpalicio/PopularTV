@@ -29,7 +29,7 @@ class NetworkDataProvider @Inject constructor(
                 response.body()?.also {
                     val items: MutableList<TvShow> = mutableListOf()
                     it.data.forEach{ tvShowDto: TvShowDto -> items.add(tvShowDto.toValueObject()) }
-                    callback(TvShow.State.Succes(items))
+                    callback(TvShow.State.Success(items))
                 }
             }
         })

@@ -9,7 +9,7 @@ data class TvShow(
 ) {
     sealed class State {
         object Loading : State()
-        class Succes(val tvShows: List<TvShow>) : State()
+        class Success(val tvShows: List<TvShow>) : State()
         class Error(val message: String) : State()
     }
 }
