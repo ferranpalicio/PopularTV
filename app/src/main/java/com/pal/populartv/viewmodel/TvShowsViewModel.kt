@@ -31,7 +31,7 @@ class TvShowsViewModel @Inject constructor(
         job.cancel()
     }
 
-    private fun getTvShows() = launch {
+    internal fun getTvShows() = launch {
         withContext(Dispatchers.IO) {
             networkDataProvider.requestData { updateView(it) }
         }

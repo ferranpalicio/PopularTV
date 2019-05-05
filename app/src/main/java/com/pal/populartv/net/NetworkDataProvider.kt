@@ -14,10 +14,14 @@ import javax.inject.Inject
 class NetworkDataProvider @Inject constructor(
     private val tvShowsApi: TvShowsApi
 ): DataProvider<TvShow.State>{
+
+    private var page: Int = 0
+
     override fun requestData(callback: (item: TvShow.State) -> Unit) {
         callback(TvShow.State.Loading)
 
-        tvShowsApi.getPopularTvShows(ApiConstants.API_KEY, 1).enqueue(object : Callback<WrapperResponse<TvShowDto>> {
+        page = page.inc()
+        tvShowsApi.getPopularTvShows(ApiConstants.API_KEY, page).enqueue(object : Callback<WrapperResponse<TvShowDto>> {
             override fun onFailure(call: Call<WrapperResponse<TvShowDto>>, t: Throwable) {
                 callback(TvShow.State.Error(t.localizedMessage))
             }
@@ -26,6 +30,7 @@ class NetworkDataProvider @Inject constructor(
                 call: Call<WrapperResponse<TvShowDto>>,
                 response: Response<WrapperResponse<TvShowDto>>
             ) {
+                //todo handle response codes
                 response.body()?.also {
                     val items: MutableList<TvShow> = mutableListOf()
                     it.data.forEach{ tvShowDto: TvShowDto -> items.add(tvShowDto.toValueObject()) }

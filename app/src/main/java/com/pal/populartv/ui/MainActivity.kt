@@ -17,6 +17,7 @@ import com.pal.populartv.R
 import com.pal.populartv.di.AppComponent
 import com.pal.populartv.di.DaggerAppComponent
 import com.pal.populartv.entity.TvShow
+import com.pal.populartv.utils.InfiniteScrollListener
 import com.pal.populartv.viewmodel.TvShowsViewModel
 import javax.inject.Inject
 
@@ -42,9 +43,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            val linearLayoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            layoutManager = linearLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
+            addOnScrollListener(InfiniteScrollListener({tvShowsViewModel.getTvShows()}, linearLayoutManager))
         }
 
         tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
@@ -77,7 +80,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loading() {
         textFeedback.visibility = View.GONE
-        recyclerView.visibility = View.GONE
         progress.visibility = View.VISIBLE
     }
 
