@@ -11,9 +11,10 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.ViewHolder>() {
 
     private var items: MutableList<TvShow> = mutableListOf()
 
-    fun addItems(items : List<TvShow>) {
-        this.items.addAll(items)
-        notifyDataSetChanged()
+    fun addItems(newItems : List<TvShow>) {
+        val currentItems = itemCount
+        this.items.addAll(newItems)
+        notifyItemRangeInserted(currentItems, items.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
