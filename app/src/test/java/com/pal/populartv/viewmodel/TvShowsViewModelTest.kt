@@ -14,7 +14,9 @@ import org.junit.*
 import org.junit.Assert.assertEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentCaptor
 
+@Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class TvShowsViewModelTest {
@@ -41,39 +43,48 @@ class TvShowsViewModelTest {
     @Test
     fun update_live_data_for_successful_state() = testDispatcher.runBlockingTest {
 
-        val listTvShows: List<TvShow> = createFakeList()
-        val successfulState: TvShow.State = TvShow.State.Success(listTvShows)
+        val state: TvShow.State = TvShow.State.Success(createFakeList())
 
         whenever(networkDataProvider.requestData(any())).then { invocation ->
-            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(successfulState)
+            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(state)
         }
 
         val observer: Observer<TvShow.State> = mock()
         viewModel.tvShowsLiveData.observeForever(observer)
         viewModel.getTvShows()
 
-        verify(networkDataProvider, atLeastOnce()).requestData(any())
+        val argumentCaptor = ArgumentCaptor.forClass(TvShow.State::class.java)
+        argumentCaptor.run {
+            verify(observer, times(1)).onChanged(capture())
+            val(successState) = allValues
+            assertEquals(successState, state)
 
-        //todo
-        //assertEquals(viewModel.tvShowsLiveData.value, successfulState)
+        }
+
     }
 
-//    @Test
-//    fun update_live_data_for_error_state() = testDispatcher.runBlockingTest {
-//
-//        val errorState: TvShow.State = TvShow.State.Error("error")
-//
-//        whenever(networkDataProvider.requestData(any())).then { invocation ->
-//            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(errorState)
-//        }
-//
-//        val observer: Observer<TvShow.State> = mock()
-//        viewModel.tvShowsLiveData.observeForever(observer)
-//        viewModel.getTvShows()
-//
-//        verify(networkDataProvider, atLeastOnce()).requestData(any())
-//        assertEquals(viewModel.tvShowsLiveData.value, errorState)
-//    }
+    @Test
+    fun update_live_data_for_error_state() = testDispatcher.runBlockingTest {
+
+        val state: TvShow.State = TvShow.State.Error("error")
+
+        whenever(networkDataProvider.requestData(any())).then { invocation ->
+            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(state)
+        }
+
+        val observer: Observer<TvShow.State> = mock()
+        viewModel.tvShowsLiveData.observeForever(observer)
+        viewModel.getTvShows()
+
+        val argumentCaptor = ArgumentCaptor.forClass(TvShow.State::class.java)
+        argumentCaptor.run {
+            verify(observer, times(1)).onChanged(capture())
+            val(errorState) = allValues
+            assertEquals(errorState, state)
+
+        }
+
+    }
 
     private fun createFakeList(): List<TvShow> {
         return mutableListOf(TvShow(1, "name1", "image1", "score1"), TvShow(2, "name2", "image2", "score2"))
