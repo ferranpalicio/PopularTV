@@ -2,9 +2,11 @@ package com.pal.populartv.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pal.populartv.databinding.TvShowItemBinding
 import com.pal.populartv.entity.TvShow
+import com.pal.populartv.utils.TvShowDiffCallback
 
 
 class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.ViewHolder>() {
@@ -12,9 +14,12 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.ViewHolder>() {
     private var items: MutableList<TvShow> = mutableListOf()
 
     fun addItems(newItems : List<TvShow>) {
-        val currentItems = itemCount
+        val diffCallback = TvShowDiffCallback(this.items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.items.clear()
         this.items.addAll(newItems)
-        notifyItemRangeInserted(currentItems, items.size)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

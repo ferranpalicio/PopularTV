@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 
 class TvShowsViewModel @Inject constructor(
     private val networkDataProvider: NetworkDataProvider
-): ViewModel(), CoroutineScope {
+) : ViewModel(), CoroutineScope {
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -24,6 +24,7 @@ class TvShowsViewModel @Inject constructor(
         get() = tvShowsMutableLiveData
 
     private val dispatcherHelper = DispatcherHelper()
+    private val tvShowsList = mutableListOf<TvShow>()
 
     init {
         getTvShows()
@@ -42,7 +43,12 @@ class TvShowsViewModel @Inject constructor(
 
     private fun updateView(tvShowState: TvShow.State) = launch {
         withContext(dispatcherHelper.main) {
-            tvShowsMutableLiveData.value = tvShowState
+            if (tvShowState is TvShow.State.Success) {
+                tvShowsList.addAll(tvShowState.tvShows)
+                tvShowsMutableLiveData.value = TvShow.State.Success(tvShowsList)
+            } else {
+                tvShowsMutableLiveData.value = tvShowState
+            }
         }
     }
 }
