@@ -13,6 +13,3 @@ For now (and for the sake of simplicity), all code is based in a single module. 
 * Implement repository pattern. Add a database solution (Room), an create a repository which would manage the data (network -> database-> ui). Then update the viewmodel class (inject repository instead of the network provider)
 * Use data binding in the main activity (along with [viewmodel](https://developer.android.com/topic/libraries/data-binding/architecture))
 * Add instrumented tests
-
-**Known issue:**
-* With more than one page loaded, when you rotate the device, the view will be restored only with the last page fetched from the api. Posible solution: the view model should store all the items.
