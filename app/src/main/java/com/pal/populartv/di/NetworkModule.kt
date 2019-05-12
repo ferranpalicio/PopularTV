@@ -1,6 +1,7 @@
 package com.pal.populartv.di
 
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.pal.populartv.BuildConfig
 import com.pal.populartv.net.ApiConstants
 import com.pal.populartv.net.TvShowsApi
@@ -25,9 +26,10 @@ class NetworkModule {
 
     @Provides
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        Retrofit.Builder().baseUrl(ApiConstants.BASE_URL).client(okHttpClient).addConverterFactory(
-            GsonConverterFactory.create()
-        ).build()
+        Retrofit.Builder().baseUrl(ApiConstants.BASE_URL).client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
 
     @Provides
     fun getApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)

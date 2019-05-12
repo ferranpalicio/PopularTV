@@ -57,7 +57,7 @@ class TvShowsViewModelTest {
         argumentCaptor.run {
             verify(observer, times(1)).onChanged(capture())
             val(successState) = allValues
-            assertEquals(successState, state)
+            assertEquals(successState.javaClass, state.javaClass)
 
         }
 
