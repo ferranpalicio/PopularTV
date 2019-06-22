@@ -1,4 +1,4 @@
-package com.pal.populartv.net.dto
+package com.pal.populartv.data.net.dto
 
 import com.google.gson.annotations.SerializedName
 

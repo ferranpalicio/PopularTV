@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pal.populartv.databinding.TvShowItemBinding
-import com.pal.populartv.entity.TvShow
+import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.utils.TvShowDiffCallback
 
 

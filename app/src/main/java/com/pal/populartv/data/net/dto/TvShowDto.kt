@@ -1,8 +1,8 @@
-package com.pal.populartv.net.dto
+package com.pal.populartv.data.net.dto
 
 import com.google.gson.annotations.SerializedName
-import com.pal.populartv.entity.TvShow
-import com.pal.populartv.net.ApiConstants
+import com.pal.populartv.domain.entity.TvShow
+import com.pal.populartv.data.net.ApiConstants
 
 data class TvShowDto(
     @SerializedName("name") val name: String,

@@ -1,4 +1,4 @@
-package com.pal.populartv.net
+package com.pal.populartv.data.net
 
 
 class ApiConstants {

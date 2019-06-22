@@ -3,8 +3,9 @@ package com.pal.populartv.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pal.populartv.entity.TvShow
-import com.pal.populartv.net.NetworkDataProvider
+import com.pal.populartv.domain.entity.TvShow
+import com.pal.populartv.data.net.NetworkDataProvider
+import com.pal.populartv.ui.ScreenState
 import com.pal.populartv.utils.DispatcherHelper
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -19,8 +20,8 @@ class TvShowsViewModel @Inject constructor(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private val tvShowsMutableLiveData: MutableLiveData<TvShow.State> = MutableLiveData()
-    val tvShowsLiveData: LiveData<TvShow.State>
+    private val tvShowsMutableLiveData: MutableLiveData<ScreenState> = MutableLiveData()
+    val tvShowsLiveData: LiveData<ScreenState>
         get() = tvShowsMutableLiveData
 
     private val dispatcherHelper = DispatcherHelper()
@@ -37,17 +38,18 @@ class TvShowsViewModel @Inject constructor(
 
     internal fun getTvShows() = launch {
         withContext(dispatcherHelper.io) {
-            networkDataProvider.requestData { updateView(it) }
+            networkDataProvider.requestData { updateView(it)}
         }
     }
 
-    private fun updateView(tvShowState: TvShow.State) = launch {
+    //private fun updateView(tvShowState: ScreenState) = launch {
+    private fun updateView(result: Result<List<TvShow>>) = launch {
         withContext(dispatcherHelper.main) {
-            if (tvShowState is TvShow.State.Success) {
-                tvShowsList.addAll(tvShowState.tvShows)
-                tvShowsMutableLiveData.value = TvShow.State.Success(tvShowsList)
+            if (result.isSuccess) {
+                tvShowsList.addAll(result.getOrDefault(emptyList()))
+                tvShowsMutableLiveData.value = ScreenState.Success(tvShowsList)
             } else {
-                tvShowsMutableLiveData.value = tvShowState
+                tvShowsMutableLiveData.value = ScreenState.Error(result.exceptionOrNull()?.message ?: "oh boy")
             }
         }
     }

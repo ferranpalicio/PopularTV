@@ -3,8 +3,8 @@ package com.pal.populartv.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.pal.populartv.BuildConfig
-import com.pal.populartv.net.ApiConstants
-import com.pal.populartv.net.TvShowsApi
+import com.pal.populartv.data.net.ApiConstants
+import com.pal.populartv.data.net.TvShowsApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

@@ -1,7 +1,7 @@
 package com.pal.populartv.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.pal.populartv.entity.TvShow
+import com.pal.populartv.domain.entity.TvShow
 
 
 class TvShowDiffCallback(

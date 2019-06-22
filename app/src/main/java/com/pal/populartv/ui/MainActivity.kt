@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pal.populartv.R
 import com.pal.populartv.di.AppComponent
 import com.pal.populartv.di.DaggerAppComponent
-import com.pal.populartv.entity.TvShow
+import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.utils.InfiniteScrollListener
 import com.pal.populartv.viewmodel.TvShowsViewModel
 import javax.inject.Inject
@@ -54,11 +54,11 @@ class MainActivity : AppCompatActivity() {
         tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state)})
     }
 
-    private fun viewStateChanged(tvShowsState: TvShow.State) {
+    private fun viewStateChanged(tvShowsState: ScreenState) {
         when (tvShowsState) {
-            is TvShow.State.Loading -> loading()
-            is TvShow.State.Error -> showError(tvShowsState.message)
-            is TvShow.State.Success -> updateTvShows(tvShowsState.tvShows)
+            is ScreenState.Loading -> loading()
+            is ScreenState.Error -> showError(tvShowsState.message)
+            is ScreenState.Success -> updateTvShows(tvShowsState.tvShows)
         }
     }
 
