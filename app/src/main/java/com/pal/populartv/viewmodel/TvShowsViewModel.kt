@@ -3,6 +3,7 @@ package com.pal.populartv.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.data.net.NetworkDataProvider
 import com.pal.populartv.ui.ScreenState
@@ -14,11 +15,7 @@ import kotlin.coroutines.CoroutineContext
 
 class TvShowsViewModel @Inject constructor(
     private val networkDataProvider: NetworkDataProvider
-) : ViewModel(), CoroutineScope {
-
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+) : ViewModel(){
 
     private val tvShowsMutableLiveData: MutableLiveData<ScreenState> = MutableLiveData()
     val tvShowsLiveData: LiveData<ScreenState>
@@ -27,23 +24,14 @@ class TvShowsViewModel @Inject constructor(
     private val dispatcherHelper = DispatcherHelper()
     private val tvShowsList = mutableListOf<TvShow>()
 
-    init {
-        getTvShows()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
-
-    internal fun getTvShows() = launch {
+    internal fun getTvShows() = viewModelScope.launch {
+        tvShowsMutableLiveData.value = ScreenState.Loading
         withContext(dispatcherHelper.io) {
             networkDataProvider.requestData { updateView(it)}
         }
     }
 
-    //private fun updateView(tvShowState: ScreenState) = launch {
-    private fun updateView(result: Result<List<TvShow>>) = launch {
+    private fun updateView(result: Result<List<TvShow>>) = viewModelScope.launch {
         withContext(dispatcherHelper.main) {
             if (result.isSuccess) {
                 tvShowsList.addAll(result.getOrDefault(emptyList()))

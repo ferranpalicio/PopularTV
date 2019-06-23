@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
         tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state)})
+        tvShowsViewModel.getTvShows()
     }
 
     private fun viewStateChanged(tvShowsState: ScreenState) {
