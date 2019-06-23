@@ -21,7 +21,7 @@ class NetworkDataProvider @Inject constructor(
 
         page++
         try {
-            val response: Response<WrapperResponse<TvShowDto>> = tvShowsApi.getPopularTvShowsAsync(ApiConstants.API_KEY, page).await()
+            val response: Response<WrapperResponse<TvShowDto>> = tvShowsApi.getPopularTvShowsAsync(ApiConstants.API_KEY, page)
             if (response.isSuccessful) {
                 response.body()?.also { wrapperResponse ->
                     callback(Result.success(wrapperResponse.data.map { it.toValueObject() }))
