@@ -1,6 +1,6 @@
-package com.pal.populartv.net.dto
+package com.pal.populartv.data.net.dto
 
-import com.pal.populartv.net.ApiConstants
+import com.pal.populartv.data.net.ApiConstants
 import org.junit.Assert.*
 import org.junit.Test
 

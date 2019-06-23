@@ -1,20 +1,17 @@
 package com.pal.populartv.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.*
-import com.pal.populartv.entity.TvShow
-import com.pal.populartv.net.NetworkDataProvider
+import com.pal.populartv.CoroutinesTestRule
+import com.pal.populartv.domain.entity.TvShow
+import com.pal.populartv.data.net.NetworkDataProvider
+import com.pal.populartv.testObserver
+import com.pal.populartv.ui.ScreenState
 import kotlinx.coroutines.*
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.*
-import org.junit.Assert.assertEquals
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentCaptor
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
@@ -24,69 +21,52 @@ class TvShowsViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    @get:Rule
+    var coroutinesTestRule = CoroutinesTestRule()
 
     lateinit var viewModel: TvShowsViewModel
     private val networkDataProvider: NetworkDataProvider = mock()
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
         viewModel = TvShowsViewModel(networkDataProvider)
     }
 
-    @After
-    fun cleanUp() {
-        Dispatchers.resetMain()
-    }
-
     @Test
-    fun update_live_data_for_successful_state() = testDispatcher.runBlockingTest {
+    fun update_live_data_for_successful_state() = coroutinesTestRule.testDispatcher.runBlockingTest {
 
-        val state: TvShow.State = TvShow.State.Success(createFakeList())
+        val resultOk = Result.success(createFakeList())
+        val liveDataUnderTest = viewModel.tvShowsLiveData.testObserver()
 
         whenever(networkDataProvider.requestData(any())).then { invocation ->
-            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(state)
+            (invocation.arguments[0] as (Result<List<TvShow>>) -> Unit).invoke(resultOk)
         }
 
-        val observer: Observer<TvShow.State> = mock()
-        viewModel.tvShowsLiveData.observeForever(observer)
         viewModel.getTvShows()
 
-        val argumentCaptor = ArgumentCaptor.forClass(TvShow.State::class.java)
-        argumentCaptor.run {
-            verify(observer, times(1)).onChanged(capture())
-            val(successState) = allValues
-            assertEquals(successState.javaClass, state.javaClass)
-
-        }
+        assert(liveDataUnderTest.observedValues.size == 2)
+        assert(liveDataUnderTest.observedValues[0] is ScreenState.Loading)
+        assert(liveDataUnderTest.observedValues[1] is ScreenState.Success)
 
     }
 
     @Test
-    fun update_live_data_for_error_state() = testDispatcher.runBlockingTest {
-
-        val state: TvShow.State = TvShow.State.Error("error")
+    fun update_live_data_for_error_state() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val resultError = Result.failure<Exception>(Exception())
+        val liveDataUnderTest = viewModel.tvShowsLiveData.testObserver()
 
         whenever(networkDataProvider.requestData(any())).then { invocation ->
-            (invocation.arguments[0] as (TvShow.State) -> Unit).invoke(state)
+            (invocation.arguments[0] as (Result<Exception>) -> Unit).invoke(resultError)
         }
 
-        val observer: Observer<TvShow.State> = mock()
-        viewModel.tvShowsLiveData.observeForever(observer)
         viewModel.getTvShows()
 
-        val argumentCaptor = ArgumentCaptor.forClass(TvShow.State::class.java)
-        argumentCaptor.run {
-            verify(observer, times(1)).onChanged(capture())
-            val(errorState) = allValues
-            assertEquals(errorState, state)
-
-        }
+        assert(liveDataUnderTest.observedValues.size == 2)
+        assert(liveDataUnderTest.observedValues[0] is ScreenState.Loading)
+        assert(liveDataUnderTest.observedValues[1] is ScreenState.Error)
 
     }
 
-    private fun createFakeList(): List<TvShow> {
-        return mutableListOf(TvShow(1, "name1", "image1", "score1"), TvShow(2, "name2", "image2", "score2"))
-    }
+    private fun createFakeList() =
+        listOf(TvShow(1, "name1", "image1", "score1"), TvShow(2, "name2", "image2", "score2"))
 }
