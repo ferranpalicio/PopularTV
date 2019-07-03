@@ -10,7 +10,6 @@ import com.pal.populartv.ui.ScreenState
 import com.pal.populartv.utils.DispatcherHelper
 import kotlinx.coroutines.*
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 
 class TvShowsViewModel @Inject constructor(
@@ -27,11 +26,12 @@ class TvShowsViewModel @Inject constructor(
     internal fun getTvShows() = viewModelScope.launch {
         tvShowsMutableLiveData.value = ScreenState.Loading
         withContext(dispatcherHelper.io) {
-            networkDataProvider.requestData { updateView(it)}
+            val requestData = networkDataProvider.requestData()
+            updateView(requestData)
         }
     }
 
-    private fun updateView(result: Result<List<TvShow>>) = viewModelScope.launch {
+    private suspend fun updateView(result: Result<List<TvShow>>) {
         withContext(dispatcherHelper.main) {
             if (result.isSuccess) {
                 tvShowsList.addAll(result.getOrDefault(emptyList()))

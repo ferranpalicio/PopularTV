@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xallow-result-return-type"]
+    }
     compileSdkVersion androidCompileSdkVersion
     defaultConfig {
         applicationId "com.pal.populartv"
