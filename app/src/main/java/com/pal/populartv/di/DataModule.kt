@@ -3,6 +3,7 @@ package com.pal.populartv.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.pal.populartv.BuildConfig
+import com.pal.populartv.data.mapper.NetworkToLocalMapper
 import com.pal.populartv.data.net.ApiConstants
 import com.pal.populartv.data.net.TvShowsApi
 import dagger.Module
@@ -13,8 +14,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class NetworkModule {
+class DataModule {
 
+    //network
     @Provides
     fun getOkHttpClient(): OkHttpClient = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
         level = if (BuildConfig.DEBUG) {
@@ -33,5 +35,12 @@ class NetworkModule {
 
     @Provides
     fun getApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)
+
+    //local
+    //todo provide db instance
+
+    //mapper
+    @Provides
+    fun getNetworkToLocalMapper() : NetworkToLocalMapper = NetworkToLocalMapper()
 
 }

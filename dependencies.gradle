@@ -16,6 +16,8 @@ ext {
     gsonVersion = '2.3.0'
     coroutinesAdapterVersion = '0.9.2'
 
+    roomVersion = '2.1.0'
+
     picassoVersion = '2.5.2'
 
     daggerVersion = '2.21'
@@ -47,13 +49,17 @@ ext {
                  daggerCompiler         : "com.google.dagger:dagger-compiler:$daggerVersion",
 
                  kotlinCoroutines       : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines",
-                 kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines"
+                 kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines",
+
+                 room                   : "androidx.room:room-runtime:$roomVersion",
+                 roomCoroutines         : "androidx.room:room-ktx:$roomVersion"
     ]
 
     testLibraries = [junit          : "junit:junit:$junitVersion",
                      mockitoKotlin  : "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion",
                      archCoreTesting: "androidx.arch.core:core-testing:$archCoreTestingVersion",
-                     coroutinesTest : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutines"
+                     coroutinesTest : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutines",
+                     roomTest       : "androidx.room:room-testing:$roomVersion"
     ]
 
 }

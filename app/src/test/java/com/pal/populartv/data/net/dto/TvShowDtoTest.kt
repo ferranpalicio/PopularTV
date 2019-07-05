@@ -9,7 +9,7 @@ class TvShowDtoTest {
     @Test
     fun mapper_wors_as_expected() {
         val tvShowDto = TvShowDto("name", "image", 1, "4.5")
-        val (id, name, image, score) = tvShowDto.toValueObject()
+        val (id, name, image, score) = tvShowDto.toDomain()
         assertEquals(id, 1)
         assertEquals(name, "name")
         assertEquals(score, "4.5")

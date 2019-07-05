@@ -53,6 +53,9 @@ dependencies {
     implementation libraries.gson
     implementation libraries.coroutinesAdapter
 
+    implementation libraries.room
+    implementation libraries.roomCoroutines
+
     implementation libraries.picasso
 
     implementation libraries.dagger

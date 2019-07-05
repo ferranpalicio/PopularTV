@@ -4,7 +4,6 @@ import com.pal.populartv.data.DataProvider
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.data.net.dto.TvShowDto
 import com.pal.populartv.data.net.dto.WrapperResponse
-import com.pal.populartv.data.net.dto.toValueObject
 import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
@@ -26,7 +25,7 @@ class NetworkDataProvider @Inject constructor(
             return if (response.isSuccessful) {
                 var list = listOf<TvShow>()
                 response.body()?.also { wrapperResponse ->
-                    list = wrapperResponse.data.map { it.toValueObject() }
+                    list = wrapperResponse.data.map { it.toDomain() }
                 }
                 Result.success(list)
             } else {
