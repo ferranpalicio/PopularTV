@@ -52,6 +52,7 @@ ext {
                  kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines",
 
                  room                   : "androidx.room:room-runtime:$roomVersion",
+                 roomCompiler           : "androidx.room:room-compiler:$roomVersion",
                  roomCoroutines         : "androidx.room:room-ktx:$roomVersion"
     ]
 

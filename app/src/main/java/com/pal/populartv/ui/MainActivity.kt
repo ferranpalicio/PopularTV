@@ -24,7 +24,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder().build()
+        DaggerAppComponent.builder().applicationContext(applicationContext).build()
     }
 
     @Inject

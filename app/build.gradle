@@ -54,6 +54,7 @@ dependencies {
     implementation libraries.coroutinesAdapter
 
     implementation libraries.room
+    kapt libraries.roomCompiler
     implementation libraries.roomCoroutines
 
     implementation libraries.picasso
