@@ -13,14 +13,11 @@ import javax.inject.Inject
 @Reusable
 class NetworkDataProvider @Inject constructor(
     private val tvShowsApi: TvShowsApi
-) : DataProvider<List<TvShowDto>> { //todo DataProvider<List<TvShowDto>>
-
-//    private var page: Int = 0
+) : DataProvider<List<TvShowDto>> {
 
     @Throws(Exception::class)
     override suspend fun requestData(page: Int): List<TvShowDto> {
 
-//        page++
         try {
             val response: Response<WrapperResponse<TvShowDto>> =
                 tvShowsApi.getPopularTvShowsAsync(ApiConstants.API_KEY, page)

@@ -13,7 +13,6 @@ import javax.inject.Inject
 
 
 class TvShowsViewModel @Inject constructor(
-//    private val networkDataProvider: NetworkDataProvider//todo inject TvShowRepositoryImpl
     private val repository: TvShowsRepository
 ) : ViewModel(){
 
