@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.pal.populartv.BuildConfig
-import com.pal.populartv.data.TvShowRepositoryImpl
+import com.pal.populartv.data.TvShowsRepositoryImpl
 import com.pal.populartv.data.local.AppDatabase
 import com.pal.populartv.data.local.AppSettingsImpl
 import com.pal.populartv.data.local.TvShowDao
@@ -14,6 +14,7 @@ import com.pal.populartv.data.net.ApiConstants
 import com.pal.populartv.data.net.TvShowsApi
 import com.pal.populartv.domain.AppSettings
 import com.pal.populartv.domain.repository.TvShowsRepository
+import com.pal.populartv.utils.CoroutineContextProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -52,20 +53,24 @@ class DataModule {
 
     //local
     @Provides
-    fun getDatabase(applicationContext: Context) : AppDatabase =
-            Room.databaseBuilder(applicationContext, AppDatabase::class.java, "app_database.db").build()
+    fun getDatabase(applicationContext: Context): AppDatabase =
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "app_database.db").build()
 
     @Provides
-    fun getTvShowDao(appDatabase: AppDatabase) : TvShowDao = appDatabase.tvShowDao()
+    fun getTvShowDao(appDatabase: AppDatabase): TvShowDao = appDatabase.tvShowDao()
 
     //repo
     @Provides
-    fun provideRepository(repositoryImpl: TvShowRepositoryImpl): TvShowsRepository = repositoryImpl
+    fun provideRepository(repositoryImpl: TvShowsRepositoryImpl): TvShowsRepository = repositoryImpl
 
     @Provides
     fun provideAppSettings(appSettingsImpl: AppSettingsImpl): AppSettings = appSettingsImpl
 
     @Provides
-    fun getSaredPreferences(applicationContext: Context) : SharedPreferences = applicationContext.getSharedPreferences(
-        AppSettings.PREF_NAME, Context.MODE_PRIVATE)
+    fun getSaredPreferences(applicationContext: Context): SharedPreferences = applicationContext.getSharedPreferences(
+        AppSettings.PREF_NAME, Context.MODE_PRIVATE
+    )
+
+    @Provides
+    fun getCoroutineContextProvider(): CoroutineContextProvider = CoroutineContextProvider()
 }

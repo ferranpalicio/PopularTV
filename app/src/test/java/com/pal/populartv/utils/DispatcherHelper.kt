@@ -2,9 +2,11 @@ package com.pal.populartv.utils
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Unconfined
+import kotlin.coroutines.CoroutineContext
 
 
-open class DispatcherHelper {
-    open val io : CoroutineDispatcher = Dispatchers.Main
-    open val main : CoroutineDispatcher = Dispatchers.Main
+class TestContextProvider : CoroutineContextProvider() {
+    override val main: CoroutineDispatcher = Unconfined
+    override val io: CoroutineDispatcher = Unconfined
 }

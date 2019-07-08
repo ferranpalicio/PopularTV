@@ -14,7 +14,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Reusable
-class TvShowRepositoryImpl @Inject constructor(
+class TvShowsRepositoryImpl @Inject constructor(
     private val localDataProvider: LocalDataProvider,
     private val networkDataProvider: NetworkDataProvider,
     private val networkToLocalMapper: NetworkToLocalMapper,
