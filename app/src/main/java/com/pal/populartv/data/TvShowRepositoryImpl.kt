@@ -31,9 +31,9 @@ class TvShowRepositoryImpl @Inject constructor(
                 localDataProvider.removeData()
 
                 page++
-                val networkData: List<TvShowDto> = getDataFromNetworkAndSaveIt(page)
+                val roomData: List<TvShowRoomEntity> = getDataFromNetworkAndSaveIt(page)
 
-                Result.success(networkData.map { it.toDomain() })
+                Result.success(roomData.map { it.toDomain() })
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -45,18 +45,14 @@ class TvShowRepositoryImpl @Inject constructor(
                 Result.success(localData.map { it.toDomain() })
             } else {
                 page++
-                val savedData = localDataProvider.requestData(page)
-                if (savedData.isEmpty()) {
-                    val networkData: List<TvShowDto> = getDataFromNetworkAndSaveIt(page)
-                    Result.success(networkData.map { it.toDomain() })
-                } else {
-                    Result.success(savedData.map { it.toDomain() })
-                }
+                val roomData: List<TvShowRoomEntity> = getDataFromNetworkAndSaveIt(page)
+                Result.success(roomData.map { it.toDomain() })
+
             }
         }
     }
 
-    private suspend fun getDataFromNetworkAndSaveIt(newPage: Int): List<TvShowDto> {
+    private suspend fun getDataFromNetworkAndSaveIt(newPage: Int): List<TvShowRoomEntity> {
         val networkData: List<TvShowDto> = networkDataProvider.requestData(newPage)
         val roomData: List<TvShowRoomEntity> =
             networkData.map {
@@ -66,7 +62,7 @@ class TvShowRepositoryImpl @Inject constructor(
 
         appSettings.updatLastTimeSaved(System.currentTimeMillis())
 
-        return networkData
+        return roomData
 
     }
 }

@@ -22,12 +22,11 @@ class NetworkDataProvider @Inject constructor(
             val response: Response<WrapperResponse<TvShowDto>> =
                 tvShowsApi.getPopularTvShowsAsync(ApiConstants.API_KEY, page)
             if (response.isSuccessful) {
-                var list = listOf<TvShowDto>()
-                response.body()?.also { wrapperResponse ->
-                    //list = wrapperResponse.data.map { it.toDomain() }
-                    list = wrapperResponse.data
+                if (response.body() != null) {
+                    return response.body()!!.data
+                } else {
+                    throw Exception("Error parsing body")
                 }
-                return list
             } else {
                 val message = response.errorBody()?.string() ?: "Something went wrong"
                 throw IOException(message)
