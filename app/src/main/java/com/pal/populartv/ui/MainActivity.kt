@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity() {
             layoutManager = linearLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
-            addOnScrollListener(InfiniteScrollListener({tvShowsViewModel.getTvShows()}, linearLayoutManager))
+            addOnScrollListener(InfiniteScrollListener({ tvShowsViewModel.getTvShows() }, linearLayoutManager))
         }
 
         tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
-        tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state)})
+        tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state) })
         tvShowsViewModel.getTvShows()
     }
 
