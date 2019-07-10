@@ -12,7 +12,7 @@ class NetworkToLocalMapper @Inject constructor() : EntityMapper<Pair<TvShowDto, 
         TvShowRoomEntity(
             from.first.id,
             from.first.name,
-            from.first.image,
+            from.first.image ?: "",
             from.first.score,
             from.second
         )

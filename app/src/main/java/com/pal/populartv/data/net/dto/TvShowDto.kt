@@ -6,7 +6,7 @@ import com.pal.populartv.data.net.ApiConstants
 
 data class TvShowDto(
     @SerializedName("name") val name: String,
-    @SerializedName("backdrop_path") val image: String,
+    @SerializedName("backdrop_path") val image: String?,
     @SerializedName("id") val id: Int,
     @SerializedName("vote_average") val score: String
 ) {
