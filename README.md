@@ -7,7 +7,6 @@
 * Dagger 2 is used for DI (in a project with multiple modules I would consider to use [dagger-android](https://google.github.io/dagger/android))
 
 **Next steps:**
-* Redo DataProvider solution (kotlin.Result cannot be used as a return type ¯\_(ツ)_/¯) -> the method getTvShows from ViewModel is using 2 coroutines (should be using only one)
-* Implement repository pattern. Add a database solution (Room), an create a repository which would manage the data (network -> database-> ui). Then update the viewmodel class (inject repository instead of the network provider)
+* Add usecase regarding tv shows search
 * Use data binding in the main activity (along with [viewmodel](https://developer.android.com/topic/libraries/data-binding/architecture))
 * Add instrumented tests
