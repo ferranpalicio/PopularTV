@@ -27,12 +27,12 @@ class TvShowsRepositoryImpl @Inject constructor(
     override suspend fun getTvShows(): Result<List<TvShow>> {
 
         if (System.currentTimeMillis() - appSettings.lastTimeDataSaved() > timeRange) {
+
+            localDataProvider.removeData()
+
+            page++
             return try {
-                localDataProvider.removeData()
-
-                page++
                 val roomData: List<TvShowRoomEntity> = getDataFromNetworkAndSaveIt(page)
-
                 Result.success(roomData.map { it.toDomain() })
             } catch (e: Exception) {
                 Result.failure(e)
@@ -45,9 +45,12 @@ class TvShowsRepositoryImpl @Inject constructor(
                 Result.success(localData.map { it.toDomain() })
             } else {
                 page++
-                val roomData: List<TvShowRoomEntity> = getDataFromNetworkAndSaveIt(page)
-
-                Result.success(roomData.map { it.toDomain() })
+                return try {
+                    val roomData: List<TvShowRoomEntity> = getDataFromNetworkAndSaveIt(page)
+                    Result.success(roomData.map { it.toDomain() })
+                }catch (e: Exception) {
+                    Result.failure(e)
+                }
 
             }
         }
@@ -57,7 +60,8 @@ class TvShowsRepositoryImpl @Inject constructor(
         val networkData: List<TvShowDto> = networkDataProvider.requestData(newPage)
         val roomData: List<TvShowRoomEntity> =
             networkData.map {
-                networkToLocalMapper.mapFromRemote(Pair(it, newPage)) }
+                networkToLocalMapper.mapFromRemote(Pair(it, newPage))
+            }
 
         localDataProvider.persistData(roomData)
 
