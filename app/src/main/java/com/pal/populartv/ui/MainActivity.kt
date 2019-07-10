@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
             addOnScrollListener(InfiniteScrollListener({ tvShowsViewModel.getTvShows() }, linearLayoutManager))
+            setHasFixedSize(true)
         }
 
         tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
