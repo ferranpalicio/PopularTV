@@ -20,7 +20,7 @@ ext {
 
     picassoVersion = '2.5.2'
 
-    daggerVersion = '2.21'
+    daggerVersion = '2.22.1'
 
     kotlinCoroutines = '1.2.1'
 

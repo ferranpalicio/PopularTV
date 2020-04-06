@@ -8,10 +8,11 @@ import dagger.Component
 @Component(modules = [DataModule::class, ViewModelModule::class])
 interface AppComponent {
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance fun applicationContext(applicationContext: Context): Builder
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance applicationContext: Context
+        ) : AppComponent
     }
 
     fun inject(activity: MainActivity)
