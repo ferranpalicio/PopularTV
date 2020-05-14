@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <variable
-            name="tvShow"
-            type="com.pal.populartv.domain.entity.TvShow" />
-    </data>
-
-    <FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tv_show_item_height">
 
-        <ImageView
+    <ImageView
             android:id="@+id/image_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:imageUrl="@{tvShow.image}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription"
             tools:src="@android:drawable/star_big_on" />
+    <!--app:imageUrl="@{tvShow.image}"-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="62dp"
             android:layout_gravity="bottom"
@@ -35,33 +26,32 @@
             android:orientation="horizontal"
             android:padding="6dp">
 
-            <TextView
-                android:id="@+id/textView2"
+        <TextView
+                android:id="@+id/tvshow_name"
                 style="@style/TvShowItemStyle"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="bottom"
                 android:maxLines="2"
-                android:text="@{tvShow.name}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintEnd_toStartOf="@+id/tvshow_score"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="tv show name\n lolololo" />
 
-            <TextView
-                android:id="@+id/textView"
+        <TextView
+                android:id="@+id/tvshow_score"
                 style="@style/TvShowItemStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/tv_show_rating(tvShow.score)}"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/tvshow_name"
                 tools:text="tv show score" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
-</layout>
+    </LinearLayout>
+</FrameLayout>
