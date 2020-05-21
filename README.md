@@ -6,7 +6,12 @@
 * Modularize the app
   * Modularize exsiting feature (popular tv service) into a module
   * Create a module (regarding a completely different feature)
-  * Separate funcionalities into specific modules (~~core~~ (add more shared dependencies, instances supplies), navigation, user data, tracking...)
+  * Separate funcionalities into specific modules:
+    * ~~core~~ (add more shared dependencies/instances)
+    * navigation
+    * user data
+    * tracking
+    * and more...
 * UI
   * Play with: compose, motionlayout ...
 * Add instrumented tests
