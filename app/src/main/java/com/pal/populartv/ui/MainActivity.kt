@@ -13,19 +13,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pal.populartv.PlaygroundApp
 import com.pal.populartv.R
-import com.pal.populartv.di.AppComponent
-import com.pal.populartv.di.DaggerAppComponent
+
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.utils.InfiniteScrollListener
 import com.pal.populartv.viewmodel.TvShowsViewModel
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-
-    private val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(applicationContext)
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        appComponent.inject(this)
+        (application as PlaygroundApp).appComponent.inject(this)
 
         setContentView(R.layout.activity_main)
 

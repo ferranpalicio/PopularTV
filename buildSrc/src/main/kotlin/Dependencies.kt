@@ -13,7 +13,9 @@ object Deps {
 
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
     const val loggingInterceptor =
-        "com.squareup.okhttp3:logging-interceptor:${Versions.loggingInterceptorVersion}"
+        "com.squareup.okhttp3:logging-interceptor:${Versions.okhttpVersion}"
+    const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttpVersion}"
+    const val urlconnection = "com.squareup.okhttp3:okhttp-urlconnection:${Versions.okhttpVersion}"
     const val gson = "com.squareup.retrofit2:converter-gson:${Versions.gsonVersion}"
     const val coroutinesAdapter =
         "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${Versions.coroutinesAdapterVersion}"
@@ -23,7 +25,8 @@ object Deps {
     const val dagger = "com.google.dagger:dagger:${Versions.daggerVersion}"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.daggerVersion}"
 
-    const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
+    const val kotlinCoroutines =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
     const val kotlinCoroutinesAndroid =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
 
@@ -34,9 +37,11 @@ object Deps {
 
 object TestDeps {
     const val junit = "junit:junit:${Versions.junitVersion}"
-    const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlinVersion}"
+    const val mockitoKotlin =
+        "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlinVersion}"
     const val archCoreTesting = "androidx.arch.core:core-testing:${Versions.archCoreTestingVersion}"
-    const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutines}"
+    const val coroutinesTest =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinCoroutines}"
     const val roomTest = "androidx.room:room-testing:${Versions.roomVersion}"
 }
 
@@ -69,5 +74,4 @@ fun DependencyHandler.unitTest() {
     add("testImplementation", TestDeps.mockitoKotlin)
     add("testImplementation", TestDeps.archCoreTesting)
     add("testImplementation", TestDeps.coroutinesTest)
-    add("testImplementation", TestDeps.roomTest)
 }

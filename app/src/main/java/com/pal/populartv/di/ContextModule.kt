@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.pal.populartv.BuildConfig
 import com.pal.populartv.data.TvShowsRepositoryImpl
 import com.pal.populartv.data.local.AppDatabase
 import com.pal.populartv.data.local.AppSettingsImpl
@@ -18,28 +17,22 @@ import com.pal.populartv.utils.CoroutineContextProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class DataModule {
+class ContextModule {
 
-    /*
-    For the moment, there's no need to mark this with @Reusable neither @Singleton, since there's only one screen, and
-    only one instance of each dependency it's been created and required. Once I add another viewmodel, annotation should be added
-    */
-
-
-    //network
     @Provides
-    fun getOkHttpClient(): OkHttpClient = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.BASIC
-        }
-    }).build()
+    fun getSharedPreferences(applicationContext: Context): SharedPreferences = applicationContext.getSharedPreferences(
+        AppSettings.PREF_NAME, Context.MODE_PRIVATE
+    )
+
+    //todo getResourcesMethod?
+
+    //todo remove all this methods (move it to correspondent modules/components)
+    @Provides
+    fun getCoroutineContextProvider(): CoroutineContextProvider = CoroutineContextProvider()
 
     @Provides
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit =
@@ -65,12 +58,4 @@ class DataModule {
 
     @Provides
     fun provideAppSettings(appSettingsImpl: AppSettingsImpl): AppSettings = appSettingsImpl
-
-    @Provides
-    fun getSaredPreferences(applicationContext: Context): SharedPreferences = applicationContext.getSharedPreferences(
-        AppSettings.PREF_NAME, Context.MODE_PRIVATE
-    )
-
-    @Provides
-    fun getCoroutineContextProvider(): CoroutineContextProvider = CoroutineContextProvider()
 }

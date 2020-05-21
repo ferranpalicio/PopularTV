@@ -3,6 +3,13 @@ import org.gradle.kotlin.dsl.`kotlin-dsl`
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
+    `kotlin-dsl-precompiled-script-plugins`
+}
+
+repositories {
+    google()
+    mavenCentral()
+    jcenter()
 }
 
 gradlePlugin {
@@ -13,17 +20,11 @@ gradlePlugin {
         }
     }
 }
-// Required since Gradle 4.10+.
-repositories {
-    google()
-    mavenCentral()
-    jcenter()
-}
 
 dependencies {
     compileOnly(gradleApi())
 
-    implementation("com.android.tools.build:gradle:3.6.2")
+    implementation("com.android.tools.build:gradle:3.4.2")
     //https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-gradle-plugin
     implementation(kotlin("gradle-plugin", "1.3.72"))//should be the same than Versions.kotlinVersion?
     implementation(kotlin("android-extensions"))

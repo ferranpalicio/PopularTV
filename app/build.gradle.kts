@@ -5,6 +5,11 @@ plugins {
     kotlin("kapt")
 }
 
+repositories {
+    google()
+    jcenter()
+}
+
 android {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xallow-result-return-type")
@@ -31,4 +36,8 @@ dependencies {
     implementation(Deps.picasso)
 
     unitTest()
+    testImplementation(TestDeps.roomTest)
+
+    //implementation(project(":core"))
+    implementation(project(":core"))
 }

@@ -6,12 +6,12 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
+//https://medium.com/wantedly-engineering/managing-android-multi-module-project-with-gradle-plugin-and-kotlin-4fcc126e7e49
 class AndroidBaseConfigPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         // Apply Required Plugins.
         project.plugins.apply("kotlin-android")
-        //project.plugins.apply("kotlin-android-extensions")
+        project.plugins.apply("kotlin-android-extensions")
 
         // Configure common android build parameters.
         val androidExtension = project.extensions.getByName("android")
@@ -66,7 +66,7 @@ class AndroidBaseConfigPlugin : Plugin<Project> {
             add("implementation", Deps.kotlinStdLib)
             add("implementation", Deps.appCompat)
             add("implementation", Deps.ktxCore)
-            add("implementation", Deps.fragment)
+            //add("implementation", Deps.fragment)
         }
 
     }

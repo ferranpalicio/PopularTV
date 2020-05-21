@@ -15,9 +15,9 @@ object Versions {
     const val lifecycleVersion = "2.1.0-beta01"
 
     const val retrofitVersion = "2.6.0"
-    const val loggingInterceptorVersion = "3.10.0"
     const val gsonVersion = "2.3.0"
     const val coroutinesAdapterVersion = "0.9.2"
+    const val okhttpVersion = "4.7.1"
 
     const val roomVersion = "2.1.0"
 
