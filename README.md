@@ -4,8 +4,9 @@
 **Next steps:**
 * ~~Migrate gradle build to kotlin~~
 * Modularize the app
+  * Modularize exsiting feature (popular tv service) into a module
   * Create a module (regarding a completely different feature)
-  * Separate funcionalities into specific modules (core, navigation, user data, tracking...)
+  * Separate funcionalities into specific modules (~~core~~ (add more shared dependencies, instances supplies), navigation, user data, tracking...)
 * UI
   * Play with: compose, motionlayout ...
 * Add instrumented tests
