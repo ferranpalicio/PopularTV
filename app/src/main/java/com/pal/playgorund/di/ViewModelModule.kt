@@ -2,7 +2,7 @@ package com.pal.playgorund.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.pal.playgorund.viewmodel.TvShowsViewModel
+import com.pal.populartv.viewmodel.TvShowsViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -24,8 +24,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(TvShowsViewModel::class)
-    abstract fun bindTvShowsViewModel(viewModel: TvShowsViewModel): ViewModel
+    @ViewModelKey(com.pal.populartv.viewmodel.TvShowsViewModel::class)
+    abstract fun bindTvShowsViewModel(viewModel: com.pal.populartv.viewmodel.TvShowsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

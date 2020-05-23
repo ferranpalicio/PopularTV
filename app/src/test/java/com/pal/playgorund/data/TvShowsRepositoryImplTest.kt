@@ -2,12 +2,12 @@ package com.pal.playgorund.data
 
 import com.nhaarman.mockitokotlin2.*
 import com.pal.playgorund.BaseCoroutineTester
-import com.pal.playgorund.data.local.LocalDataProvider
-import com.pal.playgorund.data.local.TvShowRoomEntity
-import com.pal.playgorund.data.mapper.NetworkToLocalMapper
-import com.pal.playgorund.data.net.NetworkDataProvider
-import com.pal.playgorund.data.net.dto.TvShowDto
-import com.pal.playgorund.domain.AppSettings
+import com.pal.populartv.data.local.LocalDataProvider
+import com.pal.populartv.data.local.TvShowRoomEntity
+import com.pal.populartv.data.mapper.NetworkToLocalMapper
+import com.pal.populartv.data.net.NetworkDataProvider
+import com.pal.populartv.data.net.dto.TvShowDto
+import com.pal.populartv.domain.AppSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -23,17 +23,22 @@ import org.mockito.ArgumentMatchers.anyLong
 @ExperimentalCoroutinesApi
 class TvShowsRepositoryImplTest: BaseCoroutineTester() {
 
-    private lateinit var repo: TvShowsRepositoryImpl
+    private lateinit var repo: com.pal.populartv.data.TvShowsRepositoryImpl
 
-    private val mockLocalDataProvider: LocalDataProvider = mock()
-    private val mockNetworkDataProvider: NetworkDataProvider = mock()
-    private val mockNetworkToLocalMapper: NetworkToLocalMapper = mock()
-    private val mockAppSettings: AppSettings = mock()
+    private val mockLocalDataProvider: com.pal.populartv.data.local.LocalDataProvider = mock()
+    private val mockNetworkDataProvider: com.pal.populartv.data.net.NetworkDataProvider = mock()
+    private val mockNetworkToLocalMapper: com.pal.populartv.data.mapper.NetworkToLocalMapper = mock()
+    private val mockAppSettings: com.pal.populartv.domain.AppSettings = mock()
 
     @Before
     override fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        repo = TvShowsRepositoryImpl(mockLocalDataProvider, mockNetworkDataProvider, mockNetworkToLocalMapper, mockAppSettings)
+        repo = com.pal.populartv.data.TvShowsRepositoryImpl(
+            mockLocalDataProvider,
+            mockNetworkDataProvider,
+            mockNetworkToLocalMapper,
+            mockAppSettings
+        )
     }
 
     @Test
@@ -83,8 +88,36 @@ class TvShowsRepositoryImplTest: BaseCoroutineTester() {
     }
 
     private fun createFakeNetworkList() =
-            listOf(TvShowDto("name1", "image1", 1, "score1"), TvShowDto("name2", "image2", 2, "score2"))
+            listOf(
+                com.pal.populartv.data.net.dto.TvShowDto(
+                    "name1",
+                    "image1",
+                    1,
+                    "score1"
+                ),
+                com.pal.populartv.data.net.dto.TvShowDto(
+                    "name2",
+                    "image2",
+                    2,
+                    "score2"
+                )
+            )
 
     private fun createFakeLocalList() =
-            listOf(TvShowRoomEntity(1, "name1", "image1", "score1", 1), TvShowRoomEntity(2, "name2", "image2", "score2", 1))
+            listOf(
+                com.pal.populartv.data.local.TvShowRoomEntity(
+                    1,
+                    "name1",
+                    "image1",
+                    "score1",
+                    1
+                ),
+                com.pal.populartv.data.local.TvShowRoomEntity(
+                    2,
+                    "name2",
+                    "image2",
+                    "score2",
+                    1
+                )
+            )
 }

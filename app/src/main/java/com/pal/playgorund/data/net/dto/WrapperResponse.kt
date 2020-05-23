@@ -1,9 +1,0 @@
-package com.pal.playgorund.data.net.dto
-
-import com.google.gson.annotations.SerializedName
-
-
-data class WrapperResponse<T>(
-    @SerializedName("page") val page: Int,
-    @SerializedName("results") val data: List<T>
-)

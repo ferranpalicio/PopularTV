@@ -3,8 +3,9 @@ package com.pal.playgorund.di
 import android.content.Context
 import com.pal.core.di.CoreComponent
 import com.pal.core.di.scope.AppScope
+import com.pal.populartv.di.PopularTvInjector
 //import com.pal.core.di.CoreComponent
-import com.pal.playgorund.ui.MainActivity
+import com.pal.populartv.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 
@@ -13,7 +14,7 @@ import dagger.Component
     dependencies = [CoreComponent::class]
 )
 @AppScope
-interface AppComponent {
+interface AppComponent: PopularTvInjector {
 
     @Component.Factory
     interface Factory {
@@ -23,5 +24,5 @@ interface AppComponent {
         ): AppComponent
     }
 
-    fun inject(activity: MainActivity)
+    //fun inject(activity: com.pal.populartv.ui.MainActivity)
 }

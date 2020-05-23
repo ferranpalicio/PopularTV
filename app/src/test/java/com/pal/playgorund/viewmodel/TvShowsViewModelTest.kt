@@ -3,10 +3,9 @@ package com.pal.playgorund.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.pal.playgorund.BaseCoroutineTester
-import com.pal.playgorund.data.TvShowsRepositoryImpl
-import com.pal.playgorund.domain.entity.TvShow
-import com.pal.playgorund.testObserver
-import com.pal.playgorund.ui.ScreenState
+import com.pal.populartv.data.TvShowsRepositoryImpl
+import com.pal.populartv.domain.entity.TvShow
+import com.pal.populartv.ui.ScreenState
 import com.pal.playgorund.utils.TestContextProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest
@@ -24,14 +23,17 @@ class TvShowsViewModelTest: BaseCoroutineTester() {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var viewModel: TvShowsViewModel
+    private lateinit var viewModel: com.pal.populartv.viewmodel.TvShowsViewModel
 
-    private val mockRepository: TvShowsRepositoryImpl = mock()
+    private val mockRepository: com.pal.populartv.data.TvShowsRepositoryImpl = mock()
 
     @Before
     override fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = TvShowsViewModel(mockRepository, TestContextProvider())
+        viewModel = com.pal.populartv.viewmodel.TvShowsViewModel(
+            mockRepository,
+            TestContextProvider()
+        )
     }
 
     @Test
@@ -45,8 +47,8 @@ class TvShowsViewModelTest: BaseCoroutineTester() {
         viewModel.getTvShows()
 
         assert(liveDataUnderTest.observedValues.size == 2)
-        assert(liveDataUnderTest.observedValues[0] is ScreenState.Loading)
-        assert(liveDataUnderTest.observedValues[1] is ScreenState.Success)
+        assert(liveDataUnderTest.observedValues[0] is com.pal.populartv.ui.ScreenState.Loading)
+        assert(liveDataUnderTest.observedValues[1] is com.pal.populartv.ui.ScreenState.Success)
 
     }
 
@@ -59,8 +61,8 @@ class TvShowsViewModelTest: BaseCoroutineTester() {
         viewModel.getTvShows()
 
         assert(liveDataUnderTest.observedValues.size == 2)
-        assert(liveDataUnderTest.observedValues[0] is ScreenState.Loading)
-        assert(liveDataUnderTest.observedValues[1] is ScreenState.Error)
+        assert(liveDataUnderTest.observedValues[0] is com.pal.populartv.ui.ScreenState.Loading)
+        assert(liveDataUnderTest.observedValues[1] is com.pal.populartv.ui.ScreenState.Error)
 
     }
 
