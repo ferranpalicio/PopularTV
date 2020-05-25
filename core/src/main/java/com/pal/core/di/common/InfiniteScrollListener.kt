@@ -1,4 +1,4 @@
-package com.pal.populartv.utils
+package com.pal.core.di.common
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

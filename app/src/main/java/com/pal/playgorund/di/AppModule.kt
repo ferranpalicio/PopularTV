@@ -13,7 +13,7 @@ import com.pal.populartv.data.net.ApiConstants
 import com.pal.populartv.data.net.TvShowsApi
 import com.pal.populartv.domain.AppSettings
 import com.pal.populartv.domain.repository.TvShowsRepository
-import com.pal.populartv.utils.CoroutineContextProvider
+import com.pal.core.di.common.CoroutineContextProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -21,7 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class ContextModule {
+class AppModule {
 
     @Provides
     fun getSharedPreferences(applicationContext: Context): SharedPreferences = applicationContext.getSharedPreferences(
@@ -32,7 +32,8 @@ class ContextModule {
 
     //todo remove all this methods (move it to correspondent modules/components)
     @Provides
-    fun getCoroutineContextProvider(): CoroutineContextProvider = CoroutineContextProvider()
+    fun getCoroutineContextProvider(): CoroutineContextProvider =
+        CoroutineContextProvider()
 
     @Provides
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit =

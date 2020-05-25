@@ -10,6 +10,7 @@ object Deps {
     const val material = "com.google.android.material:material:${Versions.jetpackVersion}"
     const val lifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleVersion}"
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
+    const val recyclerView = "androidx.recyclerview:recyclerview:${Versions.recyclerViewVersion}"
 
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
     const val loggingInterceptor =

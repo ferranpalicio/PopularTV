@@ -1,4 +1,4 @@
-package com.pal.populartv.utils
+package com.pal.core.di.common
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

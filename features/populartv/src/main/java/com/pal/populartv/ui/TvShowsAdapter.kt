@@ -18,7 +18,8 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.ViewHolder>() {
     private var items: MutableList<TvShow> = mutableListOf()
 
     fun addItems(newItems: List<TvShow>) {
-        val diffCallback = TvShowDiffCallback(this.items, newItems)
+        val diffCallback =
+            TvShowDiffCallback(this.items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         this.items.clear()

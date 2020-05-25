@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pal.populartv.R
 import com.pal.populartv.di.PopularTvInjectorProvider
 import com.pal.populartv.domain.entity.TvShow
-import com.pal.populartv.utils.InfiniteScrollListener
+import com.pal.core.di.common.InfiniteScrollListener
 import com.pal.populartv.viewmodel.TvShowsViewModel
 
 import javax.inject.Inject
@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //(application as PlaygroundApp).appComponent.inject(this)
         injector().inject(this)
 
         setContentView(R.layout.activity_main)
@@ -44,7 +43,12 @@ class MainActivity : AppCompatActivity() {
             layoutManager = linearLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
-            addOnScrollListener(InfiniteScrollListener({ tvShowsViewModel.getTvShows() }, linearLayoutManager))
+            addOnScrollListener(
+                com.pal.core.di.common.InfiniteScrollListener(
+                    { tvShowsViewModel.getTvShows() },
+                    linearLayoutManager
+                )
+            )
             setHasFixedSize(true)
         }
 
@@ -88,5 +92,5 @@ class MainActivity : AppCompatActivity() {
         return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
     }
 
-    fun MainActivity.injector() = (this.applicationContext as PopularTvInjectorProvider).popularLoginInjector()
+    private fun injector() = (this.applicationContext as PopularTvInjectorProvider).popularLoginInjector()
 }

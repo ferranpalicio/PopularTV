@@ -31,12 +31,13 @@ dependencies {
     implementation(Deps.lifecycle)
     implementation(Deps.viewmodel)
 
-    network()
+    implementation(Deps.retrofit)
+    implementation(Deps.gson)
     db()
     di()
     coroutines()
 
     implementation(Deps.picasso)
 
-    //implementation(project(":app"))//todo remove
+    implementation(project(":core"))
 }

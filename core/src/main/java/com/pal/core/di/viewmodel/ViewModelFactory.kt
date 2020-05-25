@@ -1,4 +1,4 @@
-package com.pal.playgorund.di
+package com.pal.core.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

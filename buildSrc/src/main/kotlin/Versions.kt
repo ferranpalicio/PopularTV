@@ -11,6 +11,7 @@ object Versions {
     const val jetpackVersion = "1.0.0"
     const val ktxVersion = "1.0.1"
     const val constraintLayoutVersion = "1.1.3"
+    const val recyclerViewVersion = "1.1.0"
 
     const val lifecycleVersion = "2.1.0-beta01"
 

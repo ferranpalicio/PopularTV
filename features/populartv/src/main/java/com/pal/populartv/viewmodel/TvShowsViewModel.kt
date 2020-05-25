@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pal.core.di.common.CoroutineContextProvider
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 class TvShowsViewModel @Inject constructor(
     private val repository: TvShowsRepository,
-    private val coroutineContextProvider: com.pal.populartv.utils.CoroutineContextProvider
+    private val coroutineContextProvider: CoroutineContextProvider
 ) : ViewModel(){
 
     private val tvShowsMutableLiveData: MutableLiveData<com.pal.populartv.ui.ScreenState> = MutableLiveData()

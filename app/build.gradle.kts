@@ -11,9 +11,6 @@ repositories {
 }
 
 android {
-    /*kotlinOptions {
-        freeCompilerArgs = listOf("-Xallow-result-return-type")
-    }*/
     defaultConfig {
         applicationId = "com.pal.populartv"
         versionCode = 1
@@ -30,7 +27,6 @@ dependencies {
     unitTest()
     testImplementation(TestDeps.roomTest)
 
-    //implementation(project(":core"))
     implementation(project(":core"))
     implementation(project(":features:populartv"))
 }

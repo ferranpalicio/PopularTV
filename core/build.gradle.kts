@@ -22,6 +22,8 @@ dependencies {
     implementation(Deps.okhttp)
     implementation(Deps.loggingInterceptor)
     implementation(Deps.urlconnection)
+    implementation(Deps.recyclerView)
+    implementation(Deps.kotlinCoroutines)
 
     implementation(Deps.dagger)
     kapt(Deps.daggerCompiler)
