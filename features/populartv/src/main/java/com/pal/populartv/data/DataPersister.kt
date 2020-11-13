@@ -1,7 +1,7 @@
 package com.pal.populartv.data
 
-
-interface DataPersister<T>: DataProvider<T> {
+//todo uncouple data types from data managment
+interface DataPersister<T>: DataProvider<T, Nothing> {
     suspend fun persistData(data: T)
     suspend fun removeData()
 }

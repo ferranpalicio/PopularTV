@@ -1,5 +1,7 @@
 package com.pal.populartv.di
 
+import com.pal.populartv.di.PopularTVComponent
+
 interface PopularTvInjectorProvider {
-    fun popularLoginInjector(): PopularTvInjector
+    fun popularTvInjector(): PopularTVComponent
 }

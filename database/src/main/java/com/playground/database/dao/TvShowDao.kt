@@ -1,11 +1,12 @@
-package com.pal.populartv.data.local
+package com.playground.database.dao
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.pal.populartv.data.local.TvShowRoomEntity.Companion.TVSHOW_PAGE
-import com.pal.populartv.data.local.TvShowRoomEntity.Companion.TVSHOW_TABLE_NAME
+import com.playground.database.entities.TvShowRoomEntity
+import com.playground.database.entities.TvShowRoomEntity.Companion.TVSHOW_PAGE
+import com.playground.database.entities.TvShowRoomEntity.Companion.TVSHOW_TABLE_NAME
 
 @Dao
 interface TvShowDao {

@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.data.net.ApiConstants
 
-data class TvShowDto(
+data class
+TvShowDto(
     @SerializedName("name") val name: String,
     @SerializedName("backdrop_path") val image: String?,
     @SerializedName("id") val id: Int,

@@ -1,4 +1,4 @@
-package com.pal.populartv.domain
+package com.pal.core.domain
 
 
 interface AppSettings {
@@ -9,5 +9,5 @@ interface AppSettings {
 
     fun lastTimeDataSaved(): Long
 
-    fun updatLastTimeSaved(timestamp: Long)
+    fun updateLastTimeSaved(timestamp: Long)
 }

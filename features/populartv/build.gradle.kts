@@ -11,17 +11,9 @@ repositories {
 }
 
 android {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xallow-result-return-type")
-    }
     defaultConfig {
         versionCode = 1
         versionName = "1.0"
-        /*javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = mapOf("room.incremental" to "true")
-            }
-        }*/
     }
 }
 
@@ -31,8 +23,7 @@ dependencies {
     implementation(Deps.lifecycle)
     implementation(Deps.viewmodel)
 
-    implementation(Deps.retrofit)
-    implementation(Deps.gson)
+    network()
     db()
     di()
     coroutines()
@@ -40,4 +31,5 @@ dependencies {
     implementation(Deps.picasso)
 
     implementation(project(":core"))
+    implementation(project(":database"))
 }

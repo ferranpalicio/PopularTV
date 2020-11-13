@@ -8,23 +8,20 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pal.core.di.common.AsyncResult
+import com.pal.core.di.common.InfiniteScrollListener
 import com.pal.populartv.R
 import com.pal.populartv.di.PopularTvInjectorProvider
 import com.pal.populartv.domain.entity.TvShow
-import com.pal.core.di.common.InfiniteScrollListener
 import com.pal.populartv.viewmodel.TvShowsViewModel
-
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModelFactory by lazy { injector().viewModelFactory }
     private lateinit var tvShowsViewModel: TvShowsViewModel
 
     private val recyclerView: RecyclerView by bind(R.id.recycler_view)
@@ -34,12 +31,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        injector().inject(this)
-
         setContentView(R.layout.activity_main)
 
+        setRecyclerView()
+        initViewModelAndObservers()
+
+        tvShowsViewModel.getTvShows()
+    }
+
+    private fun initViewModelAndObservers() {
+        tvShowsViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
+        tvShowsViewModel.tvShowsLiveData.observe(
+            this,
+            Observer { state -> viewStateChanged(state) })
+    }
+
+    private fun setRecyclerView() {
         recyclerView.apply {
-            val linearLayoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+            val linearLayoutManager =
+                LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
             layoutManager = linearLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
@@ -51,17 +62,13 @@ class MainActivity : AppCompatActivity() {
             )
             setHasFixedSize(true)
         }
-
-        tvShowsViewModel = ViewModelProviders.of(this, viewModelFactory).get(TvShowsViewModel::class.java)
-        tvShowsViewModel.tvShowsLiveData.observe(this, Observer { state -> viewStateChanged(state) })
-        tvShowsViewModel.getTvShows()
     }
 
-    private fun viewStateChanged(tvShowsState: ScreenState) {
+    private fun viewStateChanged(tvShowsState: AsyncResult<List<TvShow>>) {
         when (tvShowsState) {
-            is ScreenState.Loading -> loading()
-            is ScreenState.Error -> showError(tvShowsState.message)
-            is ScreenState.Success -> updateTvShows(tvShowsState.tvShows)
+            is AsyncResult.Loading -> loading()
+            is AsyncResult.Error -> showError(tvShowsState.message)
+            is AsyncResult.Success -> updateTvShows(tvShowsState.data)
         }
     }
 
@@ -92,5 +99,5 @@ class MainActivity : AppCompatActivity() {
         return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
     }
 
-    private fun injector() = (this.applicationContext as PopularTvInjectorProvider).popularLoginInjector()
+    private fun injector() = (this.applicationContext as PopularTvInjectorProvider).popularTvInjector()
 }

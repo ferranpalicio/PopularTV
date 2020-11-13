@@ -1,6 +1,6 @@
 package com.pal.populartv.data.mapper
 
-import com.pal.populartv.data.local.TvShowRoomEntity
+import com.playground.database.entities.TvShowRoomEntity
 import com.pal.populartv.data.net.dto.TvShowDto
 import dagger.Reusable
 import javax.inject.Inject

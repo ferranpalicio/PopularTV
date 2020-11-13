@@ -1,11 +1,9 @@
-package com.pal.populartv.data.local
+package com.playground.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.pal.populartv.data.local.TvShowRoomEntity.Companion.TVSHOW_TABLE_NAME
-import com.pal.populartv.data.net.ApiConstants
-import com.pal.populartv.domain.entity.TvShow
+import com.playground.database.entities.TvShowRoomEntity.Companion.TVSHOW_TABLE_NAME
 
 @Entity(tableName = TVSHOW_TABLE_NAME)
 data class TvShowRoomEntity(
@@ -15,7 +13,6 @@ data class TvShowRoomEntity(
     @ColumnInfo(name = TVSHOW_SCORE) val score: String,
     @ColumnInfo(name = TVSHOW_PAGE) var page: Int
 ) {
-    fun toDomain(): TvShow = TvShow(id, name, ApiConstants.BASE_IMAGE_URL + image, score)
 
     companion object {
         const val TVSHOW_TABLE_NAME = "tvShows"

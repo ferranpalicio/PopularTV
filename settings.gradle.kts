@@ -1,2 +1,2 @@
-include (":app", ":core", ":features:populartv")
-rootProject.buildFileName = "build.gradle.kts.kts"
+include(":app", ":database", ":core", ":features:populartv")
+rootProject.buildFileName = "build.gradle.kts"

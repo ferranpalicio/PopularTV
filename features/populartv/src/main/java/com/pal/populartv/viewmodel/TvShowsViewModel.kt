@@ -4,41 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pal.core.di.common.CoroutineContextProvider
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
-import com.pal.populartv.ui.ScreenState
+import com.pal.core.di.common.AsyncResult
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 class TvShowsViewModel @Inject constructor(
-    private val repository: TvShowsRepository,
-    private val coroutineContextProvider: CoroutineContextProvider
-) : ViewModel(){
+    private val repository: TvShowsRepository
+) : ViewModel() {
 
-    private val tvShowsMutableLiveData: MutableLiveData<ScreenState> = MutableLiveData()
-    val tvShowsLiveData: LiveData<ScreenState>
-        get() = tvShowsMutableLiveData
+    private val _tvShowsLiveData: MutableLiveData<AsyncResult<List<TvShow>>> = MutableLiveData()
+    val tvShowsLiveData: LiveData<AsyncResult<List<TvShow>>>
+        get() = _tvShowsLiveData
 
     private val tvShowsList = mutableListOf<TvShow>()
 
     fun getTvShows() = viewModelScope.launch {
-        tvShowsMutableLiveData.value = ScreenState.Loading
-        withContext(coroutineContextProvider.io) {
-            val requestData = repository.getTvShows()
-            updateView(requestData)
-        }
+        _tvShowsLiveData.value = AsyncResult.Loading
+        updateView(repository.getTvShows())
     }
 
-    private suspend fun updateView(result: Result<List<TvShow>>) {
-        withContext(coroutineContextProvider.main) {
-            if (result.isSuccess) {
-                tvShowsList.addAll(result.getOrDefault(emptyList()))
-                tvShowsMutableLiveData.value = ScreenState.Success(tvShowsList)
-            } else {
-                tvShowsMutableLiveData.value = ScreenState.Error(result.exceptionOrNull()?.message ?: "oh boy")
+    private fun updateView(result: AsyncResult<List<TvShow>>) {
+        when (result) {
+            is AsyncResult.Success -> {
+                tvShowsList.addAll(result.data)
+                _tvShowsLiveData.value = AsyncResult.Success(tvShowsList)
+            }
+            else -> {
+                _tvShowsLiveData.value = result
             }
         }
     }

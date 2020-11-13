@@ -1,5 +1,7 @@
 package com.pal.populartv.data.local
 
+import com.playground.database.dao.TvShowDao
+import com.playground.database.entities.TvShowRoomEntity
 import com.pal.populartv.data.DataPersister
 import dagger.Reusable
 import javax.inject.Inject
@@ -16,7 +18,7 @@ class LocalDataProvider @Inject constructor(
         tvShowDao.insertAll(data)
     }
 
-    override suspend fun requestData(page: Int): List<TvShowRoomEntity> {
+    override suspend fun requestPagedData(page: Int): List<TvShowRoomEntity> {
         return if (page == 0) {
             tvShowDao.getAllTvShows()
         } else {

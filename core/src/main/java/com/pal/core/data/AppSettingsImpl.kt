@@ -1,7 +1,7 @@
-package com.pal.populartv.data.local
+package com.pal.core.data
 
 import android.content.SharedPreferences
-import com.pal.populartv.domain.AppSettings
+import com.pal.core.domain.AppSettings
 import javax.inject.Inject
 
 
@@ -9,7 +9,7 @@ class AppSettingsImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : AppSettings {
 
-    override fun updatLastTimeSaved(timestamp: Long) {
+    override fun updateLastTimeSaved(timestamp: Long) {
         sharedPreferences.edit().putLong(AppSettings.LAST_TIME_DATA, timestamp).apply()
     }
 

@@ -19,7 +19,6 @@ class NetworkModule {
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             clientBuilder.addInterceptor(httpLoggingInterceptor)
         }
-        val build = clientBuilder.build()
-        return build
+        return clientBuilder.build()
     }
 }

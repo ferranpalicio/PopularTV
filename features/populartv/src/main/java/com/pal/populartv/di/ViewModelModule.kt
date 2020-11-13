@@ -1,4 +1,4 @@
-package com.pal.playgorund.di
+package com.pal.populartv.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
