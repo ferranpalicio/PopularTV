@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pal.core.di.common.CoroutineContextProvider
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
+import com.pal.populartv.ui.ScreenState
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -17,14 +18,14 @@ class TvShowsViewModel @Inject constructor(
     private val coroutineContextProvider: CoroutineContextProvider
 ) : ViewModel(){
 
-    private val tvShowsMutableLiveData: MutableLiveData<com.pal.populartv.ui.ScreenState> = MutableLiveData()
-    val tvShowsLiveData: LiveData<com.pal.populartv.ui.ScreenState>
+    private val tvShowsMutableLiveData: MutableLiveData<ScreenState> = MutableLiveData()
+    val tvShowsLiveData: LiveData<ScreenState>
         get() = tvShowsMutableLiveData
 
     private val tvShowsList = mutableListOf<TvShow>()
 
-    internal fun getTvShows() = viewModelScope.launch {
-        tvShowsMutableLiveData.value = com.pal.populartv.ui.ScreenState.Loading
+    fun getTvShows() = viewModelScope.launch {
+        tvShowsMutableLiveData.value = ScreenState.Loading
         withContext(coroutineContextProvider.io) {
             val requestData = repository.getTvShows()
             updateView(requestData)
@@ -35,9 +36,9 @@ class TvShowsViewModel @Inject constructor(
         withContext(coroutineContextProvider.main) {
             if (result.isSuccess) {
                 tvShowsList.addAll(result.getOrDefault(emptyList()))
-                tvShowsMutableLiveData.value = com.pal.populartv.ui.ScreenState.Success(tvShowsList)
+                tvShowsMutableLiveData.value = ScreenState.Success(tvShowsList)
             } else {
-                tvShowsMutableLiveData.value = com.pal.populartv.ui.ScreenState.Error(result.exceptionOrNull()?.message ?: "oh boy")
+                tvShowsMutableLiveData.value = ScreenState.Error(result.exceptionOrNull()?.message ?: "oh boy")
             }
         }
     }

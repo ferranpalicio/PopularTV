@@ -3,9 +3,8 @@ package com.pal.playgorund.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.*
 import com.pal.playgorund.BaseCoroutineTester
-import com.pal.populartv.data.TvShowsRepositoryImpl
+import com.pal.playgorund.testObserver
 import com.pal.populartv.domain.entity.TvShow
-import com.pal.populartv.ui.ScreenState
 import com.pal.playgorund.utils.TestContextProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.runBlockingTest

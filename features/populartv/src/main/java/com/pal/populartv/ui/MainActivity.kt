@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             itemAnimator = DefaultItemAnimator()
             adapter = TvShowsAdapter()
             addOnScrollListener(
-                com.pal.core.di.common.InfiniteScrollListener(
+                InfiniteScrollListener(
                     { tvShowsViewModel.getTvShows() },
                     linearLayoutManager
                 )
