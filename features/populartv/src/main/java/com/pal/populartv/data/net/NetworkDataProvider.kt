@@ -18,7 +18,7 @@ class NetworkDataProvider @Inject constructor(
     //todo create common function to extract data
 
     @Throws(Exception::class)
-    override suspend fun requestPagedData(page: Int): List<TvShowDto> {
+    override suspend fun requestData(page: Int): List<TvShowDto> {
 //        try {
         val pagedResponse: Response<PagedWrapperResponse<TvShowDto>> =
             tvShowsApi.getPopularTvShowsAsync(ApiConstants.API_KEY, page)

@@ -7,6 +7,7 @@ import com.playground.database.entities.TvShowRoomEntity
 import com.pal.populartv.data.mapper.NetworkToLocalMapper
 import com.pal.populartv.data.net.NetworkDataProvider
 import com.pal.populartv.data.mapper.DatabaseToEntityMapper
+import com.pal.populartv.data.net.ApiConstants.Companion.INITAL_PAGE
 import com.pal.populartv.data.net.dto.TvShowDto
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
@@ -23,32 +24,37 @@ class TvShowsRepositoryImpl @Inject constructor(
     private val popularTvSettings: PopularTvSettings
 ) : TvShowsRepository {
 
-    private var page = 0
+    //    private var page = 0
     private val timeRange = 10000 * 6 //1 min todo extract functionality
 
-    override suspend fun getTvShows(): AsyncResult<List<TvShow>> {
+    override suspend fun getTvShows(page: Int): AsyncResult<Pair<List<TvShow>, Int>> {
 
-        if (System.currentTimeMillis() - popularTvSettings.lastTimeDataSaved() > timeRange) {
+        if (System.currentTimeMillis() - popularTvSettings.lastTimeDataSaved() > timeRange) {// todo extract functionality
 
+            //invalidate local data
             localDataProvider.removeData()
 
-            page++
-            return try {
-                val roomData: List<TvShowRoomEntity> =
-                    getDataFromNetworkAndSaveIt(page)
-                AsyncResult.Success(roomData.map { databaseToEntityMapper.mapFromRemote(it) })
-            } catch (e: Exception) {
-                AsyncResult.Error(e.localizedMessage)
-            }
+            //todo reset content from screen
+            //page++
+            return getDataFromNetworkAndSaveIt(INITAL_PAGE)
 
         } else {
-            return if (page == 0) {
-                val localData: List<TvShowRoomEntity> =
-                    localDataProvider.requestPagedData(page)
-                page = localData.last().page
-                AsyncResult.Success(localData.map { databaseToEntityMapper.mapFromRemote(it) })
+            //return if (page == 0) {
+            val localData: List<TvShowRoomEntity> =
+                localDataProvider.requestData(page)
+            //page = localData.last().page
+            return if (localData.isEmpty()) {
+                getDataFromNetworkAndSaveIt(page)
             } else {
-                page++
+                AsyncResult.Success(
+                    Pair(
+                        localData.map { databaseToEntityMapper.mapFromRemote(it) },
+                        page
+                    )
+                )
+            }
+            /*} else {
+                //page++
                 return try {
                     val roomData: List<TvShowRoomEntity> =
                         getDataFromNetworkAndSaveIt(page)
@@ -57,23 +63,32 @@ class TvShowsRepositoryImpl @Inject constructor(
                     AsyncResult.Error(e.localizedMessage)
                 }
 
-            }
+            }*/
         }
     }
 
-    private suspend fun getDataFromNetworkAndSaveIt(newPage: Int): List<TvShowRoomEntity> {
-        val networkData: List<TvShowDto> =
-            networkDataProvider.requestPagedData(newPage)
-        val roomData: List<TvShowRoomEntity> =
-            networkData.map {
-                networkToLocalMapper.mapFromRemote(Pair(it, newPage))
-            }
+    private suspend fun getDataFromNetworkAndSaveIt(page: Int): AsyncResult<Pair<List<TvShow>, Int>> {
+        val finalPage = if (page <= 0) 1 else page
 
-        localDataProvider.persistData(roomData)
+        return try {
+            val networkData: List<TvShowDto> =
+                networkDataProvider.requestData(finalPage)
+            val roomData: List<TvShowRoomEntity> =
+                networkData.map {
+                    networkToLocalMapper.mapFromRemote(Pair(it, finalPage))
+                }
 
-        popularTvSettings.updateLastTimeSaved(System.currentTimeMillis())
+            localDataProvider.persistData(roomData)
 
-        return roomData
-
+            popularTvSettings.updateLastTimeSaved(System.currentTimeMillis())
+            AsyncResult.Success(
+                Pair(
+                    roomData.map { databaseToEntityMapper.mapFromRemote(it) },
+                    finalPage
+                )
+            )
+        } catch (e: Exception) {
+            AsyncResult.Error(e.localizedMessage)
+        }
     }
 }

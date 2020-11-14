@@ -13,8 +13,4 @@ class CoreModule {
         applicationContext.getSharedPreferences(
             "app_settings", Context.MODE_PRIVATE
         )
-
-    /*@Provides
-    fun provideAppSettings(appSettingsImpl: AppSettingsImpl): AppSettings =
-        appSettingsImpl*/
 }

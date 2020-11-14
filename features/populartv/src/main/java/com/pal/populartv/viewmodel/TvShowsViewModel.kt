@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
 import com.pal.core.common.AsyncResult
+import com.pal.populartv.data.net.ApiConstants.Companion.INITAL_PAGE
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,19 +21,30 @@ class TvShowsViewModel @Inject constructor(
         get() = _tvShowsLiveData
 
     private val tvShowsList = mutableListOf<TvShow>()
+    private var page = INITAL_PAGE
 
     fun getTvShows() = viewModelScope.launch {
         _tvShowsLiveData.value = AsyncResult.Loading
-        updateView(repository.getTvShows())
+        updateView(repository.getTvShows(page))
     }
 
-    private fun updateView(result: AsyncResult<List<TvShow>>) {
+    private fun updateView(result: AsyncResult<Pair<List<TvShow>, Int>>) {
         when (result) {
             is AsyncResult.Success -> {
-                tvShowsList.addAll(result.data)
-                _tvShowsLiveData.value = AsyncResult.Success(tvShowsList)
+                val pageLoaded = result.data.second
+                val elements = result.data.first
+                if (pageLoaded < page) {
+                    page = pageLoaded
+                    tvShowsList.clear()
+                    tvShowsList.addAll(elements)
+                    _tvShowsLiveData.value = AsyncResult.Success(tvShowsList)
+                } else {
+                    tvShowsList.addAll(elements)
+                    _tvShowsLiveData.value = AsyncResult.Success(tvShowsList)
+                }
+                page++
             }
-            else -> {
+            is AsyncResult.Error -> {
                 _tvShowsLiveData.value = result
             }
         }

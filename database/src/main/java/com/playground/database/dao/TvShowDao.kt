@@ -10,11 +10,11 @@ import com.playground.database.entities.TvShowRoomEntity.Companion.TVSHOW_TABLE_
 
 @Dao
 interface TvShowDao {
-    @Query("SELECT * FROM $TVSHOW_TABLE_NAME ORDER BY $TVSHOW_PAGE ASC")
-    suspend fun getAllTvShows(): List<TvShowRoomEntity>
+    /*@Query("SELECT * FROM $TVSHOW_TABLE_NAME ORDER BY $TVSHOW_PAGE ASC")
+    suspend fun getAllTvShows(): List<TvShowRoomEntity>*/
 
     @Query("SELECT * FROM $TVSHOW_TABLE_NAME WHERE $TVSHOW_PAGE LIKE :page")
-    suspend fun getTvShowsForPage(page: Int): List<TvShowRoomEntity>
+    suspend fun getTvShows(page: Int): List<TvShowRoomEntity>
 
     @Insert(onConflict = SQLiteDatabase.CONFLICT_REPLACE)
     suspend fun insertAll(tvShows: List<TvShowRoomEntity>)
