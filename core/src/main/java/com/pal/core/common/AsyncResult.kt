@@ -1,4 +1,4 @@
-package com.pal.core.di.common
+package com.pal.core.common
 
 sealed class AsyncResult<out T> {
     object Loading : AsyncResult<Nothing>()

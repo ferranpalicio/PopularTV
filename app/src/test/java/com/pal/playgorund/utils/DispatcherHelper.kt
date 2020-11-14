@@ -1,6 +1,6 @@
 package com.pal.playgorund.utils
 
-import com.pal.core.di.common.CoroutineContextProvider
+import com.pal.core.common.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.Unconfined
 

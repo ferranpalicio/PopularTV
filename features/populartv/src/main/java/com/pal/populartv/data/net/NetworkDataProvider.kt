@@ -1,6 +1,6 @@
 package com.pal.populartv.data.net
 
-import com.pal.populartv.data.DataProvider
+import com.pal.core.data_contract.DataProvider
 import com.pal.populartv.data.net.dto.TvShowDto
 import com.pal.populartv.data.net.dto.PagedWrapperResponse
 import com.pal.populartv.data.net.dto.TvShowDetailDto

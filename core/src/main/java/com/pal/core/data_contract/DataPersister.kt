@@ -1,4 +1,4 @@
-package com.pal.populartv.data
+package com.pal.core.data_contract
 
 //todo uncouple data types from data managment
 interface DataPersister<T>: DataProvider<T, Nothing> {

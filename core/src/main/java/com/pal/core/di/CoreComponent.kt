@@ -1,9 +1,9 @@
 package com.pal.core.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.pal.core.di.modules.CoreModule
 import com.pal.core.di.modules.NetworkModule
-import com.pal.core.domain.AppSettings
 import dagger.BindsInstance
 import dagger.Component
 import okhttp3.OkHttpClient
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 interface CoreComponent {
 
     fun okHttpClient(): OkHttpClient
-    fun appSettings(): AppSettings
+    fun sharedPreferences(): SharedPreferences
 
     @Component.Factory
     interface Factory {

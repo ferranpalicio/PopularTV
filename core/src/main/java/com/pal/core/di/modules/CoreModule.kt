@@ -2,8 +2,6 @@ package com.pal.core.di.modules
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.pal.core.data.AppSettingsImpl
-import com.pal.core.domain.AppSettings
 import dagger.Module
 import dagger.Provides
 
@@ -11,10 +9,12 @@ import dagger.Provides
 class CoreModule {
 
     @Provides
-    fun getSharedPreferences(applicationContext: Context): SharedPreferences = applicationContext.getSharedPreferences(
-        AppSettings.PREF_NAME, Context.MODE_PRIVATE
-    )
+    fun getSharedPreferences(applicationContext: Context): SharedPreferences =
+        applicationContext.getSharedPreferences(
+            "app_settings", Context.MODE_PRIVATE
+        )
 
-    @Provides
-    fun provideAppSettings(appSettingsImpl: AppSettingsImpl): AppSettings = appSettingsImpl
+    /*@Provides
+    fun provideAppSettings(appSettingsImpl: AppSettingsImpl): AppSettings =
+        appSettingsImpl*/
 }

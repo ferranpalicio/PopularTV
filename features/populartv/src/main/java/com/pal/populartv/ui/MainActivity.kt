@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pal.core.di.common.AsyncResult
-import com.pal.core.di.common.InfiniteScrollListener
+import com.pal.core.common.AsyncResult
+import com.pal.core.common.InfiniteScrollListener
 import com.pal.populartv.R
 import com.pal.populartv.di.PopularTvInjectorProvider
 import com.pal.populartv.domain.entity.TvShow

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
-import com.pal.core.di.common.AsyncResult
+import com.pal.core.common.AsyncResult
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

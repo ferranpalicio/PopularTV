@@ -1,4 +1,4 @@
-package com.pal.core.di.common
+package com.pal.core.common
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

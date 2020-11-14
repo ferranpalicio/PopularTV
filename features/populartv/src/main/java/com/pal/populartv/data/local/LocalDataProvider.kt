@@ -2,7 +2,7 @@ package com.pal.populartv.data.local
 
 import com.playground.database.dao.TvShowDao
 import com.playground.database.entities.TvShowRoomEntity
-import com.pal.populartv.data.DataPersister
+import com.pal.core.data_contract.DataPersister
 import dagger.Reusable
 import javax.inject.Inject
 

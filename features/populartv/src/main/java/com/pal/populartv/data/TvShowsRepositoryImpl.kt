@@ -1,7 +1,7 @@
 package com.pal.populartv.data
 
-import com.pal.core.di.common.AsyncResult
-import com.pal.core.domain.AppSettings
+import com.pal.core.common.AsyncResult
+import com.pal.populartv.data.settings.PopularTvSettings
 import com.pal.populartv.data.local.LocalDataProvider
 import com.playground.database.entities.TvShowRoomEntity
 import com.pal.populartv.data.mapper.NetworkToLocalMapper
@@ -20,7 +20,7 @@ class TvShowsRepositoryImpl @Inject constructor(
     private val networkDataProvider: NetworkDataProvider,
     private val networkToLocalMapper: NetworkToLocalMapper,
     private val databaseToEntityMapper: DatabaseToEntityMapper,
-    private val appSettings: AppSettings
+    private val popularTvSettings: PopularTvSettings
 ) : TvShowsRepository {
 
     private var page = 0
@@ -28,7 +28,7 @@ class TvShowsRepositoryImpl @Inject constructor(
 
     override suspend fun getTvShows(): AsyncResult<List<TvShow>> {
 
-        if (System.currentTimeMillis() - appSettings.lastTimeDataSaved() > timeRange) {
+        if (System.currentTimeMillis() - popularTvSettings.lastTimeDataSaved() > timeRange) {
 
             localDataProvider.removeData()
 
@@ -71,7 +71,7 @@ class TvShowsRepositoryImpl @Inject constructor(
 
         localDataProvider.persistData(roomData)
 
-        appSettings.updateLastTimeSaved(System.currentTimeMillis())
+        popularTvSettings.updateLastTimeSaved(System.currentTimeMillis())
 
         return roomData
 

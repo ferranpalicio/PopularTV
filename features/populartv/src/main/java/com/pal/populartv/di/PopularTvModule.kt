@@ -6,6 +6,8 @@ import com.pal.populartv.data.TvShowsRepositoryImpl
 import com.playground.database.dao.TvShowDao
 import com.pal.populartv.data.net.ApiConstants
 import com.pal.populartv.data.net.TvShowsApi
+import com.pal.populartv.data.settings.PopularTvSettings
+import com.pal.populartv.data.settings.PopularTvSettingsImpl
 import com.pal.populartv.domain.repository.TvShowsRepository
 import dagger.Module
 import dagger.Provides
@@ -31,5 +33,8 @@ class PopularTvModule {
 
     @Provides
     fun getTvShowDao(appDatabase: AppDatabase): TvShowDao = appDatabase.tvShowDao()
+
+    @Provides
+    fun provideAppSettings(appSettingsImpl: PopularTvSettingsImpl): PopularTvSettings = appSettingsImpl
 
 }
