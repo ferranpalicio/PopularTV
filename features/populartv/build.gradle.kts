@@ -31,6 +31,8 @@ dependencies {
     implementation(Deps.picasso)
 
     unitTest()
+    testImplementation(TestDeps.roomTest)
+
     implementation(project(":core"))
     implementation(project(":database"))
 }

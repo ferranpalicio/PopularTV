@@ -23,9 +23,6 @@ dependencies {
     network()
     di()
 
-    unitTest()
-    testImplementation(TestDeps.roomTest)
-
     implementation(project(":core"))
     implementation(project(":database"))
     implementation(project(":features:populartv"))

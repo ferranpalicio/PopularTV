@@ -1,41 +1,47 @@
-package com.pal.playgorund.viewmodel
+package com.pal.populartv.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.pal.core.common.AsyncResult
-import com.pal.playgorund.BaseCoroutineTester
-import com.pal.playgorund.testObserver
+import com.pal.populartv.CoroutineTestRule
+import com.pal.populartv.data.TvShowsRepositoryImpl
 import com.pal.populartv.data.net.ApiConstants.Companion.INITIAL_PAGE
 import com.pal.populartv.domain.entity.TvShow
-import kotlinx.coroutines.*
+import com.pal.populartv.testObserver
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
-import org.junit.*
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
-class TvShowsViewModelTest : BaseCoroutineTester() {
+class TvShowsViewModelTest {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var viewModel: com.pal.populartv.viewmodel.TvShowsViewModel
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
-    private val mockRepository: com.pal.populartv.data.TvShowsRepositoryImpl = mock()
+    private lateinit var viewModel: TvShowsViewModel
+
+    private val mockRepository: TvShowsRepositoryImpl = mock()
 
     @Before
-    override fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-        viewModel = com.pal.populartv.viewmodel.TvShowsViewModel(
+    fun setUp() {
+        viewModel = TvShowsViewModel(
             mockRepository
         )
     }
 
     @Test
-    fun `update live data for successful state`() = testDispatcher.runBlockingTest {
+    fun `update live data for successful state`() = runBlockingTest {
 
         val resultOk = AsyncResult.Success(Pair(createFakeList(), INITIAL_PAGE))
         val liveDataUnderTest = viewModel.tvShowsLiveData.testObserver()
@@ -51,7 +57,7 @@ class TvShowsViewModelTest : BaseCoroutineTester() {
     }
 
     @Test
-    fun `update live data for error state`() = testDispatcher.runBlockingTest {
+    fun `update live data for error state`() = runBlockingTest {
 
         whenever(mockRepository.getTvShows(INITIAL_PAGE)).thenReturn(AsyncResult.Error("error message"))
 

@@ -1,10 +1,10 @@
-package com.pal.playgorund
+package com.pal.populartv
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
 
-    class TestObserver<T> : Observer<T> {
+class TestObserver<T> : Observer<T> {
 
     val observedValues = mutableListOf<T?>()
 

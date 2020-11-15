@@ -1,8 +1,6 @@
-package com.pal.playgorund.data
+package com.pal.populartv.data
 
 import com.nhaarman.mockitokotlin2.*
-import com.pal.playgorund.BaseCoroutineTester
-import com.pal.populartv.data.TvShowsRepositoryImpl
 import com.pal.populartv.data.local.FeedStoragePolicy
 import com.pal.populartv.data.local.LocalDataProvider
 import com.pal.populartv.data.mapper.DatabaseToEntityMapper
@@ -11,10 +9,8 @@ import com.pal.populartv.data.net.ApiConstants.Companion.INITIAL_PAGE
 import com.pal.populartv.data.net.NetworkDataProvider
 import com.pal.populartv.data.settings.PopularTvSettings
 import com.playground.database.entities.TvShowRoomEntity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +20,7 @@ import org.mockito.ArgumentMatchers.anyLong
 
 @RunWith(JUnit4::class)
 @ExperimentalCoroutinesApi
-class TvShowsRepositoryImplTest : BaseCoroutineTester() {
+class TvShowsRepositoryImplTest {
 
     private lateinit var repo: TvShowsRepositoryImpl
 
@@ -36,8 +32,7 @@ class TvShowsRepositoryImplTest : BaseCoroutineTester() {
     private val mockStoragePolicy: FeedStoragePolicy = mock()
 
     @Before
-    override fun setUp() {
-        Dispatchers.setMain(testDispatcher)
+    fun setUp() {
         repo = TvShowsRepositoryImpl(
             mockLocalDataProvider, mockNetworkDataProvider, networkToLocalMapper,
             databaseToLocalMapper, mockPopularTvSettings, mockStoragePolicy
@@ -45,28 +40,27 @@ class TvShowsRepositoryImplTest : BaseCoroutineTester() {
     }
 
     @Test
-    fun `performs network request if local data it's invalidated`() =
-        testDispatcher.runBlockingTest {
+    fun `performs network request if local data it's invalidated`() = runBlockingTest {
 
-            whenever(mockStoragePolicy.isInvalidData()).thenReturn(true)
-            val fakeNetworkList = createFakeNetworkResponse()
-            whenever(mockNetworkDataProvider.requestData(anyInt())).thenReturn(fakeNetworkList)
-            repo.getTvShows(INITIAL_PAGE)
+        whenever(mockStoragePolicy.isInvalidData()).thenReturn(true)
+        val fakeNetworkList = createFakeNetworkResponse()
+        whenever(mockNetworkDataProvider.requestData(anyInt())).thenReturn(fakeNetworkList)
+        repo.getTvShows(INITIAL_PAGE)
 
-            inOrder(
-                mockLocalDataProvider,
-                mockNetworkDataProvider,
-                mockPopularTvSettings
-            ).apply {
-                verify(mockLocalDataProvider).removeData()
-                verify(mockNetworkDataProvider).requestData(eq(INITIAL_PAGE))
-                verify(mockLocalDataProvider).persistData(any())
-                verify(mockPopularTvSettings).updateLastTimeSaved(anyLong())
-            }
+        inOrder(
+            mockLocalDataProvider,
+            mockNetworkDataProvider,
+            mockPopularTvSettings
+        ).apply {
+            verify(mockLocalDataProvider).removeData()
+            verify(mockNetworkDataProvider).requestData(eq(INITIAL_PAGE))
+            verify(mockLocalDataProvider).persistData(any())
+            verify(mockPopularTvSettings).updateLastTimeSaved(anyLong())
         }
+    }
 
     @Test
-    fun `get local data if local storage is valid and have it`() = testDispatcher.runBlockingTest {
+    fun `get local data if local storage is valid and have it`() = runBlockingTest {
         whenever(mockStoragePolicy.isInvalidData()).thenReturn(false)
         whenever(mockLocalDataProvider.requestData(anyInt())).thenReturn(
             createFakeDatabaseResponse(INITIAL_PAGE)
@@ -79,7 +73,7 @@ class TvShowsRepositoryImplTest : BaseCoroutineTester() {
 
     @Test
     fun `get network data if local storage is valid but don't have it for requested page`() =
-        testDispatcher.runBlockingTest {
+        runBlockingTest {
             val page = INITIAL_PAGE + 1
             whenever(mockStoragePolicy.isInvalidData()).thenReturn(false)
             whenever(mockLocalDataProvider.requestData(page)).thenReturn(emptyList())
