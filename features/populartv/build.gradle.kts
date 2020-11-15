@@ -30,6 +30,7 @@ dependencies {
 
     implementation(Deps.picasso)
 
+    unitTest()
     implementation(project(":core"))
     implementation(project(":database"))
 }
