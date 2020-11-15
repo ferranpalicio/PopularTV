@@ -6,7 +6,7 @@ interface PopularTvSettings {
         const val LAST_TIME_DATA = "last_time_data"
     }
 
-    //todo save it in DB?
+    //todo save it in DB
     fun lastTimeDataSaved(): Long
     fun updateLastTimeSaved(timestamp: Long)
 }
