@@ -1,12 +1,10 @@
 package com.pal.populartv.ui
 
-import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pal.core.common.AsyncResult
 import com.pal.core.common.InfiniteScrollListener
+import com.pal.core.extensions.bind
 import com.pal.populartv.R
 import com.pal.populartv.di.PopularTvInjectorProvider
 import com.pal.populartv.domain.entity.TvShow
@@ -91,12 +90,6 @@ class MainActivity : AppCompatActivity() {
     private fun loading() {
         textFeedback.visibility = View.GONE
         progress.visibility = View.VISIBLE
-    }
-
-
-    fun <T : View> Activity.bind(@IdRes res: Int): Lazy<T> {
-        @Suppress("UNCHECKED_CAST")
-        return lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(res) }
     }
 
     private fun injector() = (this.applicationContext as PopularTvInjectorProvider).popularTvInjector()
