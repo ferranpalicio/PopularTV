@@ -53,7 +53,21 @@ class TvShowsViewModelTest {
         assert(liveDataUnderTest.observedValues.size == 2)
         assert(liveDataUnderTest.observedValues[0] is AsyncResult.Loading)
         assert(liveDataUnderTest.observedValues[1] is AsyncResult.Success)
+    }
 
+    @Test
+    fun `clears live data with new one one because it's invalidated`()= runBlockingTest {
+        val liveDataUnderTest = viewModel.tvShowsLiveData.testObserver()
+
+        val resultOk = AsyncResult.Success(Pair(createFakeList(), INITIAL_PAGE))
+        whenever(mockRepository.getTvShows(INITIAL_PAGE)).thenReturn(resultOk)
+        viewModel.getTvShows()
+
+        val invalidatedResultOk = AsyncResult.Success(Pair(createFakeList(), INITIAL_PAGE))
+        whenever(mockRepository.getTvShows(INITIAL_PAGE + 1)).thenReturn(invalidatedResultOk)
+        viewModel.getTvShows()
+
+        assert((liveDataUnderTest.observedValues.last() as AsyncResult.Success).data.size == 2)
     }
 
     @Test
