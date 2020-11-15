@@ -7,7 +7,6 @@ import javax.inject.Inject
 
 class DatabaseToEntityMapper @Inject constructor() : EntityMapper<TvShowRoomEntity, TvShow> {
     override fun mapFromRemote(from: TvShowRoomEntity): TvShow {
-        //fun toDomain(): TvShow = TvShow(id, name, ApiConstants.BASE_IMAGE_URL + image, score)
         return TvShow(from.id, from.name, ApiConstants.BASE_IMAGE_URL + from.image, from.score)
     }
 

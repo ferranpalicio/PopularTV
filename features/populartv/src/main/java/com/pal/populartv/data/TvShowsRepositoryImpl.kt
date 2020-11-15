@@ -1,13 +1,14 @@
 package com.pal.populartv.data
 
 import com.pal.core.common.AsyncResult
+import com.pal.populartv.data.local.FeedStoragePolicy
 import com.pal.populartv.data.settings.PopularTvSettings
 import com.pal.populartv.data.local.LocalDataProvider
 import com.playground.database.entities.TvShowRoomEntity
 import com.pal.populartv.data.mapper.NetworkToLocalMapper
 import com.pal.populartv.data.net.NetworkDataProvider
 import com.pal.populartv.data.mapper.DatabaseToEntityMapper
-import com.pal.populartv.data.net.ApiConstants.Companion.INITAL_PAGE
+import com.pal.populartv.data.net.ApiConstants.Companion.INITIAL_PAGE
 import com.pal.populartv.data.net.dto.TvShowDto
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
@@ -21,28 +22,19 @@ class TvShowsRepositoryImpl @Inject constructor(
     private val networkDataProvider: NetworkDataProvider,
     private val networkToLocalMapper: NetworkToLocalMapper,
     private val databaseToEntityMapper: DatabaseToEntityMapper,
-    private val popularTvSettings: PopularTvSettings
+    private val popularTvSettings: PopularTvSettings,
+    private val feedStoragePolicy: FeedStoragePolicy
 ) : TvShowsRepository {
-
-    //    private var page = 0
-    private val timeRange = 10000 * 6 //1 min todo extract functionality
 
     override suspend fun getTvShows(page: Int): AsyncResult<Pair<List<TvShow>, Int>> {
 
-        if (System.currentTimeMillis() - popularTvSettings.lastTimeDataSaved() > timeRange) {// todo extract functionality
-
-            //invalidate local data
+        if (feedStoragePolicy.isInvalidData()) {
             localDataProvider.removeData()
-
-            //todo reset content from screen
-            //page++
-            return getDataFromNetworkAndSaveIt(INITAL_PAGE)
+            return getDataFromNetworkAndSaveIt(INITIAL_PAGE)
 
         } else {
-            //return if (page == 0) {
             val localData: List<TvShowRoomEntity> =
                 localDataProvider.requestData(page)
-            //page = localData.last().page
             return if (localData.isEmpty()) {
                 getDataFromNetworkAndSaveIt(page)
             } else {
@@ -53,17 +45,6 @@ class TvShowsRepositoryImpl @Inject constructor(
                     )
                 )
             }
-            /*} else {
-                //page++
-                return try {
-                    val roomData: List<TvShowRoomEntity> =
-                        getDataFromNetworkAndSaveIt(page)
-                    AsyncResult.Success(roomData.map { databaseToEntityMapper.mapFromRemote(it) })
-                } catch (e: Exception) {
-                    AsyncResult.Error(e.localizedMessage)
-                }
-
-            }*/
         }
     }
 

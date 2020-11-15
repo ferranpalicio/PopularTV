@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pal.populartv.domain.entity.TvShow
 import com.pal.populartv.domain.repository.TvShowsRepository
 import com.pal.core.common.AsyncResult
-import com.pal.populartv.data.net.ApiConstants.Companion.INITAL_PAGE
+import com.pal.populartv.data.net.ApiConstants.Companion.INITIAL_PAGE
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class TvShowsViewModel @Inject constructor(
         get() = _tvShowsLiveData
 
     private val tvShowsList = mutableListOf<TvShow>()
-    private var page = INITAL_PAGE
+    private var page = INITIAL_PAGE
 
     fun getTvShows() = viewModelScope.launch {
         _tvShowsLiveData.value = AsyncResult.Loading
