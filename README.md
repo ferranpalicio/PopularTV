@@ -3,12 +3,14 @@
 
 **Next steps:**
 * ~~Migrate gradle build to kotlin~~
-* Modularize the app
-  * Modularize exsiting feature (popular tv service) into a module
+* Modularize the app:
+  * ~~Modularize exsiting feature (popular tv service) into a module~~
   * Create a module (regarding a completely different feature)
+  * Solve the navigation between features: Master-Detail (tab screen + detail screens per feature)
+    *  Use [Android Navigation](https://developer.android.com/guide/navigation/navigation-getting-started) or this [library](https://github.com/ncapdevi/FragNav)?
   * Separate funcionalities into specific modules:
-    * ~~core~~ (add more shared dependencies/instances)
-    * navigation
+    * ~~core~~ (more dependencies to be added)
+    * ~~database~~
     * user data
     * tracking
     * and more...
